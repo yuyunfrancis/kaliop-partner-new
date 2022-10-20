@@ -1,36 +1,11 @@
 import React, {useContext} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
-  AddFarm,
-  AddNewDevice,
-  AddNewShop,
   AddProduct,
-  AddUser,
-  AllDevices,
-  AllFarms,
-  BusinessProfile,
-  DocumentUpload,
-  EditBusinessProfile,
-  EditProfile,
-  ExpertOrLabAppointments,
-  Home,
-  ImageGallery,
-  MessageScreen,
-  MyUsers,
-  Notification,
-  OrderDetails,
-  Orders,
-  Profile,
-  ShopDetails,
-  ShopHome,
-  Wallet,
   AllProducts,
   ProductDetails,
-  Order,
-  ShopInfo,
-  EditShop,
-  EditProduct,
-  AddImage,
+  ShopDetails,
+  ShopHome,
 } from '../screens';
 import DrawerContent from './DrawerContent';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -69,6 +44,11 @@ export default function ScreenNavigator(props) {
         screenOptions={{headerShown: false}}
         initialRouteName={'Home'}>
         <Stack.Screen name="Home" component={BottomNavigator} />
+        <Stack.Screen name="ShopHome" component={ShopHome} />
+        <Stack.Screen name="ShopDetails" component={ShopDetails} />
+        <Stack.Screen name="AllProducts" component={AllProducts} />
+        <Stack.Screen name="AddProduct" component={AddProduct} />
+        <Stack.Screen name="ProductDetails" component={ProductDetails} />
       </Stack.Navigator>
     );
   };

@@ -18,6 +18,9 @@ import CustomStatusBar from '../../components/CustomStatusBar';
 import {STYLES} from '../../constants/theme';
 import UserContext from '../../contexts/UserContext';
 import {useTranslation} from 'react-i18next';
+import {Button} from 'react-native-paper';
+import Animated from 'react-native-reanimated';
+import BottomSheet from 'reanimated-bottom-sheet';
 
 export default function Home() {
   const {user} = useContext(UserContext);
@@ -212,11 +215,13 @@ export default function Home() {
               paddingBottom: 20,
             }}
             numColumns={2}
-            data={
-              userProfile === 'AgroExpert ' || userProfile === 'Laboratory'
-                ? menuSeed
-                : menuExpert
-            }
+            // data={
+            //   userProfile === 'AgroExpert ' || userProfile === 'Laboratory'
+            //     ? menuSeed
+            //     : menuExpert
+            // }
+
+            data={menuSeed}
             scrollEnabled={true}
             renderItem={renderItem}
             keyExtractor={(item, index) => index}

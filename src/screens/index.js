@@ -1,5 +1,22 @@
 import {Login, Verification} from './authScreens';
 import Onboarding from './Onboarding';
 import Home from './home/Home';
+import {
+  ShopHome,
+  ShopDetails,
+  AllProducts,
+  AddProduct,
+  ProductDetails,
+} from './shop';
 
-export {Login, Verification, Onboarding, Home};
+export {
+  Login,
+  Verification,
+  Onboarding,
+  Home,
+  ShopHome,
+  ShopDetails,
+  AllProducts,
+  AddProduct,
+  ProductDetails,
+};
