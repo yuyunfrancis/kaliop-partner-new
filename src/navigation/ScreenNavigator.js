@@ -1,8 +1,12 @@
 import React, {useContext} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
+  AddNewDelivery,
   AddProduct,
   AllProducts,
+  Delivery,
+  EditDelivery,
+  EditProduct,
   ProductDetails,
   ShopDetails,
   ShopHome,
@@ -49,6 +53,10 @@ export default function ScreenNavigator(props) {
         <Stack.Screen name="AllProducts" component={AllProducts} />
         <Stack.Screen name="AddProduct" component={AddProduct} />
         <Stack.Screen name="ProductDetails" component={ProductDetails} />
+        <Stack.Screen name="EditProduct" component={EditProduct} />
+        <Stack.Screen name="AddNewDelivery" component={AddNewDelivery} />
+        <Stack.Screen name="Delivery" component={Delivery} />
+        <Stack.Screen name="EditDelivery" component={EditDelivery} />
       </Stack.Navigator>
     );
   };

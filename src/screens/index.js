@@ -7,6 +7,10 @@ import {
   AllProducts,
   AddProduct,
   ProductDetails,
+  EditProduct,
+  Delivery,
+  EditDelivery,
+  AddNewDelivery,
 } from './shop';
 
 export {
@@ -19,4 +23,8 @@ export {
   AllProducts,
   AddProduct,
   ProductDetails,
+  EditProduct,
+  Delivery,
+  EditDelivery,
+  AddNewDelivery,
 };
