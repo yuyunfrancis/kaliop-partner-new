@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
-import { Dimensions } from "react-native";
+import React, {useEffect, useState} from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {Dimensions} from 'react-native';
 
-import { COLORS } from "../../contants";
+import {COLORS} from '../../constants';
 
-const { width } = Dimensions.get("window");
+const {width} = Dimensions.get('window');
 const DropDownInput = ({
   open,
   value,
@@ -22,11 +22,11 @@ const DropDownInput = ({
     <DropDownPicker
       arrowColor={COLORS.primary}
       borderColor="#ABCFB9"
-      dropDownContainerStyle={{ borderColor: "#ABCFB9" }}
+      dropDownContainerStyle={{borderColor: '#ABCFB9'}}
       labelStyle={{
         fontSize: 14,
-        textAlign: "left",
-        color: "blue",
+        textAlign: 'left',
+        color: 'blue',
       }}
       // placeholderTextColor={COLORS.primary}
       open={open}
@@ -41,7 +41,7 @@ const DropDownInput = ({
         marginBottom: 20,
       }}
       style={{
-        borderColor: "#ABCFB9",
+        borderColor: '#ABCFB9',
         paddingRight: 10,
       }}
     />

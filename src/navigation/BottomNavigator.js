@@ -26,6 +26,7 @@ const BottomNavigator = () => {
           borderTopWidth: 0,
           elevation: 0,
         },
+        headerShown: false,
         showLabel: true,
         tabBarActiveTintColor: COLORS.primary,
       }}>
