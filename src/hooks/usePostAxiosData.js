@@ -3,8 +3,10 @@ import React, {useState, useContext} from 'react';
 import {config} from '../constants/config';
 import {Alert} from 'react-native';
 import UserContext from '../contexts/UserContext';
+import {useNavigation} from '@react-navigation/native';
 
 const usePostAxiosData = (url, method = 'POST') => {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const {user} = useContext(UserContext);
@@ -34,6 +36,7 @@ const usePostAxiosData = (url, method = 'POST') => {
             console.log('res', res);
             Alert.alert('success!', res.message);
             setResult(res);
+            navigation.goBack();
           }
         })
         .catch(err => {

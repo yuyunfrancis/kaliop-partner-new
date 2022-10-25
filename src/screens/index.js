@@ -11,7 +11,13 @@ import {
   Delivery,
   EditDelivery,
   AddNewDelivery,
+  OrderDetails,
+  Order,
+  ShopProfile,
+  EditShop,
 } from './shop';
+
+import {ServiceHome} from './services';
 
 export {
   Login,
@@ -27,4 +33,10 @@ export {
   Delivery,
   EditDelivery,
   AddNewDelivery,
+  OrderDetails,
+  Order,
+  ShopProfile,
+  EditShop,
+  ServiceHome,
+  // AddNewService,
 };

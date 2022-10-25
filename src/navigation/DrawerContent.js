@@ -114,7 +114,7 @@ const DrawerContent = props => {
                 label={t('appoinments')}
                 icon={icons.access}
                 onPress={() => props.navigation.navigate('My Appointments')}
-              />
+              /> */}
               <CustomDrawerItem
                 label={t('myService')}
                 icon={icons.access}
@@ -126,7 +126,7 @@ const DrawerContent = props => {
                 onPress={() => {
                   logoutUser();
                 }}
-              /> */}
+              />
             </Drawer.Section>
           </View>
         </View>
