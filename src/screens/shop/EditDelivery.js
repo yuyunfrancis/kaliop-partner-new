@@ -25,10 +25,6 @@ import UserContext from '../../contexts/UserContext';
 const EditDelivery = ({route}) => {
   const item = route.params;
 
-  console.log('====================================');
-  console.log('Delivery', item);
-  console.log('====================================');
-
   const navigation = useNavigation();
   const {t} = useTranslation();
   const newPrice = item.price.toString();

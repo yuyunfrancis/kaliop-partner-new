@@ -12,10 +12,12 @@ import StatusBar from '../../components/StatusBar';
 import {useTranslation} from 'react-i18next';
 import {COLORS} from '../../constants';
 import {config} from '../../constants/config';
+import {Button} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 const ServiceDetails = ({route}) => {
   const item = route.params;
-
+  const navigation = useNavigation();
   console.log('====================================');
   console.log('SErvices', item);
   console.log('====================================');
@@ -77,6 +79,17 @@ const ServiceDetails = ({route}) => {
               resizeMode: 'cover',
             }}
             imageStyle={{borderRadius: 12}}></ImageBackground>
+
+          {/* <View style={styles.addBtn}>
+            <Button
+              labelStyle={{fontSize: 14}}
+              style={{paddingTop: 3, paddingBottom: 3, paddingRight: 2}}
+              mode="contained"
+              icon="plus-circle-outline"
+              onPress={() => navigation.navigate('EditService', item)}>
+              Edit Service
+            </Button>
+          </View> */}
         </ScrollView>
       </SafeAreaView>
     </>

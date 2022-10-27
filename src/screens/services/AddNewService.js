@@ -15,10 +15,11 @@ import {
 import {Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'react-native-image-picker';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import RNPickerSelect from 'react-native-picker-select';
+// import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-picker/picker';
 
 import StatusBar from '../../components/StatusBar';
 import AddTextField from '../../components/utils/AddTextField';
@@ -116,26 +117,26 @@ const AddNewService = () => {
     ImagePicker.launchCamera(options, setPickerResponse);
   }, []);
 
-  const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
+  const image = pickerResponse?.assets && pickerResponse.assets[0];
 
   const handleAddService = async () => {
     let data = new FormData();
 
-    // if (image !== null) {
-    //   const uriArray = image.uri.split(".");
-    //   const fileExtension = uriArray[uriArray.length - 1]; // e.g.: "jpg"
-    //   const fileTypeExtended = `${image.type}/${fileExtension}`; // e.g.: "image/jpg"
-    //   data.append("file", {
-    //     uri:
-    //       Platform.OS === "android"
-    //         ? image.uri
-    //         : image.uri.replace("file://", ""),
-    //     name: image.uri.split("/").pop(),
-    //     type: fileTypeExtended,
-    //   });
-    // }
+    if (image !== null) {
+      const uriArray = image.uri.split('.');
+      const fileExtension = uriArray[uriArray.length - 1]; // e.g.: "jpg"
+      // const fileTypeExtended = `${image.type}/${fileExtension}`; // e.g.: "image/jpg"
+      data.append('file', {
+        uri:
+          Platform.OS === 'android'
+            ? image.uri
+            : image.uri.replace('file://', ''),
+        name: image.uri.split('/').pop(),
+        type: image.type,
+      });
+    }
 
-    data.append('file', uri);
+    // data.append('file', uri);
 
     if (description !== null) {
       data.append('description', description);
@@ -257,7 +258,7 @@ const AddNewService = () => {
                   setPrice(text);
                 }}
               />
-              <RNPickerSelect
+              {/* <RNPickerSelect
                 onValueChange={value => {
                   if (value != null) {
                     setPeriod(value);
@@ -267,7 +268,25 @@ const AddNewService = () => {
                 items={periods}
                 placeholder={{label: t('period'), value: null}}
                 style={pickerSelectStyles}
-              />
+              /> */}
+
+              <Picker
+                placeholder={{label: t('category'), value: null}}
+                style={styles.pickerStyles}
+                selectedValue={period}
+                onValueChange={value => {
+                  if (value != null) {
+                    setPeriod(value);
+                  }
+                }}>
+                {periods.map((unit, index) => (
+                  <Picker.Item
+                    key={index}
+                    label={unit.label}
+                    value={unit.value}
+                  />
+                ))}
+              </Picker>
 
               <Text
                 style={{
@@ -285,10 +304,12 @@ const AddNewService = () => {
                   alignSelf: 'flex-start',
                 }}>
                 <View style={styles.imageContainer}>
-                  <Image
-                    source={{uri}}
-                    style={{width: 100, height: 100, borderRadius: 8}}
-                  />
+                  {image && (
+                    <Image
+                      source={{uri: image.uri}}
+                      style={{width: 100, height: 100, borderRadius: 8}}
+                    />
+                  )}
                 </View>
 
                 <TouchableOpacity
@@ -392,5 +413,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-start',
+  },
+  pickerStyles: {
+    marginTop: 15,
+    width: '100%',
+    backgroundColor: 'white',
+    marginBottom: 15,
+    color: 'gray',
   },
 });
