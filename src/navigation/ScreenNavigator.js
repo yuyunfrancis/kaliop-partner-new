@@ -15,6 +15,12 @@ import {
   ShopProfile,
   EditShop,
   ServiceHome,
+  ServiceDetails,
+  EditService,
+  AddNewService,
+  Wallet,
+  ExpertOrLabAppointments,
+  AddRange,
 } from '../screens';
 import DrawerContent from './DrawerContent';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -67,6 +73,15 @@ export default function ScreenNavigator(props) {
         <Stack.Screen name="ShopProfile" component={ShopProfile} />
         <Stack.Screen name="EditShop" component={EditShop} />
         <Stack.Screen name="Services" component={ServiceHome} />
+        <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
+        <Stack.Screen name="EditService" component={EditService} />
+        <Stack.Screen name="AddNewService" component={AddNewService} />
+        <Stack.Screen name="My Wallet" component={Wallet} />
+        <Stack.Screen
+          name="My Appointments"
+          component={ExpertOrLabAppointments}
+        />
+        <Stack.Screen name="AddRange" component={AddRange} />
       </Stack.Navigator>
     );
   };
