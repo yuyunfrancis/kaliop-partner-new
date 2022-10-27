@@ -109,12 +109,12 @@ const DrawerContent = props => {
                 label={t('profile')}
                 icon={icons.profile_pic}
                 onPress={() => props.navigation.navigate('Profile')}
-              />
+              /> */}
               <CustomDrawerItem
                 label={t('appoinments')}
                 icon={icons.access}
                 onPress={() => props.navigation.navigate('My Appointments')}
-              /> */}
+              />
               <CustomDrawerItem
                 label={t('myService')}
                 icon={icons.access}

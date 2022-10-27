@@ -17,7 +17,18 @@ import {
   EditShop,
 } from './shop';
 
-import {ServiceHome} from './services';
+import {
+  ServiceHome,
+  ServiceDetails,
+  EditService,
+  AddNewService,
+} from './services';
+
+import {Wallet} from './businessProfile';
+
+import ExpertOrLabAppointments from './booking/ExpertOrLabAppointments';
+import MyPlanning from './planning/MyPlanning';
+import AddRange from './planning/AddRange';
 
 export {
   Login,
@@ -38,5 +49,11 @@ export {
   ShopProfile,
   EditShop,
   ServiceHome,
-  // AddNewService,
+  ServiceDetails,
+  EditService,
+  AddNewService,
+  Wallet,
+  ExpertOrLabAppointments,
+  MyPlanning,
+  AddRange,
 };

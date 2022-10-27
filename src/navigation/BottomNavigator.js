@@ -11,7 +11,7 @@ import {useTranslation} from 'react-i18next';
 
 import BottomSheetScreen from './BottomSheetScreen';
 import {COLORS} from '../constants';
-import {Home} from '../screens';
+import {Home, MyPlanning, Wallet} from '../screens';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +42,7 @@ const BottomNavigator = () => {
       />
       <Tab.Screen
         name="Booking Plan"
-        component={Home}
+        component={MyPlanning}
         options={{
           tabBarLabel: t('booking'),
           tabBarIcon: ({color}) => (
@@ -76,7 +76,7 @@ const BottomNavigator = () => {
       />
       <Tab.Screen
         name="Wallet"
-        component={Home}
+        component={Wallet}
         options={{
           tabBarLabel: t('mywallet'),
           tabBarIcon: ({color}) => (
