@@ -21,6 +21,7 @@ import {
   Wallet,
   ExpertOrLabAppointments,
   AddRange,
+  EditRange,
 } from '../screens';
 import DrawerContent from './DrawerContent';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -82,6 +83,7 @@ export default function ScreenNavigator(props) {
           component={ExpertOrLabAppointments}
         />
         <Stack.Screen name="AddRange" component={AddRange} />
+        <Stack.Screen name="EditRange" component={EditRange} />
       </Stack.Navigator>
     );
   };

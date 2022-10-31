@@ -29,6 +29,7 @@ import {Wallet} from './businessProfile';
 import ExpertOrLabAppointments from './booking/ExpertOrLabAppointments';
 import MyPlanning from './planning/MyPlanning';
 import AddRange from './planning/AddRange';
+import EditRange from './planning/EditRange';
 
 export {
   Login,
@@ -56,4 +57,5 @@ export {
   ExpertOrLabAppointments,
   MyPlanning,
   AddRange,
+  EditRange,
 };

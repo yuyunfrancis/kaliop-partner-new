@@ -49,17 +49,17 @@ const BottomSheetScreen = () => {
         sheetRef.current.snapTo(1);
       },
     },
+    // {
+    //   id: 2,
+    //   label: t('orders'),
+    //   icon: icons.order,
+    //   show: function () {
+    //     navigation.navigate('Order');
+    //     sheetRef.current.snapTo(1);
+    //   },
+    // },
     {
       id: 2,
-      label: t('orders'),
-      icon: icons.order,
-      show: function () {
-        navigation.navigate('Orders');
-        sheetRef.current.snapTo(1);
-      },
-    },
-    {
-      id: 3,
       label: t('shop'),
       icon: icons.subs,
       show: function () {

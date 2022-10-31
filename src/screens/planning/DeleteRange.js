@@ -13,17 +13,32 @@ import axios from 'axios';
 import {config} from '../../constants/config';
 import Loader from '../../components/Loader';
 import UserContext from '../../contexts/UserContext';
+import {useNavigation} from '@react-navigation/native';
+import useDataFetching from '../../hooks/useDataFetching';
 
 export default function DeleteRange(props) {
+  const navigation = useNavigation();
+  const {user} = useContext(UserContext);
+
+  const [planningLoading, planningError, data, fetchData] = useDataFetching(
+    `${config.app.api_url}/planning/fetch-my-planning/${user._id}`,
+  );
+
   const [visible, setVisible] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const {user} = useContext(UserContext);
   const {range, day} = props;
 
   // console.log('day', day)
 
   const start = new Date(range.start);
   const end = new Date(range.end);
+
+  useEffect(() => {
+    const updateData = navigation.addListener('focus', () => {
+      fetchData();
+    });
+    return updateData;
+  }, [navigation]);
 
   const showDialog = () => setVisible(true);
 
@@ -50,6 +65,7 @@ export default function DeleteRange(props) {
         setLoading(false);
         if (response.data.status === 'success') {
           hideDialog();
+          setLoading(false);
         }
       })
       .catch(error => {

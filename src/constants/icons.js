@@ -17,7 +17,6 @@ const wallet = require('../../assets/icons/wallet.png');
 const help = require('../../assets/icons/help.png');
 const logo = require('../../assets/icons/small-logo.png');
 const back = require('../../assets/images/back.png');
-const menu1 = require('../../assets/icons/menu.svg');
 const dotsTop = require('../../assets/icons/dotsTop.png');
 const dotsBottom = require('../../assets/icons/dotsBottom.png');
 const menubar = require('../../assets/icons/menubar.png');
@@ -74,7 +73,6 @@ export default {
   help,
   logo,
   back,
-  menu1,
   menubar,
   right_arrow,
   disc,
