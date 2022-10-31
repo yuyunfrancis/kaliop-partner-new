@@ -24,7 +24,14 @@ import {
   AddNewService,
 } from './services';
 
-import {Wallet} from './businessProfile';
+import {
+  Wallet,
+  BusinessProfile,
+  DocumentUpload,
+  AddDocument,
+  ImageGallery,
+  AddImage,
+} from './businessProfile';
 
 import ExpertOrLabAppointments from './booking/ExpertOrLabAppointments';
 import MyPlanning from './planning/MyPlanning';
@@ -58,4 +65,9 @@ export {
   MyPlanning,
   AddRange,
   EditRange,
+  BusinessProfile,
+  DocumentUpload,
+  AddDocument,
+  ImageGallery,
+  AddImage,
 };

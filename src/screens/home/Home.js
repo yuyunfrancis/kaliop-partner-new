@@ -221,7 +221,7 @@ export default function Home() {
             //     : menuExpert
             // }
 
-            data={menuSeed}
+            data={menuExpert}
             scrollEnabled={true}
             renderItem={renderItem}
             keyExtractor={(item, index) => index}
