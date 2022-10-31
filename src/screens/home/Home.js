@@ -215,13 +215,12 @@ export default function Home() {
               paddingBottom: 20,
             }}
             numColumns={2}
-            // data={
-            //   userProfile === 'AgroExpert ' || userProfile === 'Laboratory'
-            //     ? menuSeed
-            //     : menuExpert
-            // }
-
-            data={menuExpert}
+            data={
+              userProfile === 'AgroExpert ' || userProfile === 'Laboratory'
+                ? menuSeed
+                : menuExpert
+            }
+            // data={menuExpert}
             scrollEnabled={true}
             renderItem={renderItem}
             keyExtractor={(item, index) => index}

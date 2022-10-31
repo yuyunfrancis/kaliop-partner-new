@@ -31,6 +31,7 @@ import {
   AddDocument,
   ImageGallery,
   AddImage,
+  EditBusinessProfile,
 } from './businessProfile';
 
 import ExpertOrLabAppointments from './booking/ExpertOrLabAppointments';
@@ -70,4 +71,5 @@ export {
   AddDocument,
   ImageGallery,
   AddImage,
+  EditBusinessProfile,
 };

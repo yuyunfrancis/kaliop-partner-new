@@ -9,11 +9,11 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {TextInput, Button} from 'react-native-paper';
 import * as ImagePicker from 'react-native-image-picker';
-import MultiSelect from 'react-native-multiple-select';
+// import MultiSelect from 'react-native-multiple-select';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS} from '../../constants';
@@ -59,46 +59,6 @@ const EditBusinessProfile = ({route}) => {
     return updateData;
   }, [navigation]);
 
-  const handlePostData = async () => {
-    const data = new FormData();
-
-    if (image !== null) {
-      const uriArray = image.uri.split('.');
-      const fileExtension = uriArray[uriArray.length - 1]; // e.g.: "jpg"
-      const fileTypeExtended = `${image.type}/${fileExtension}`; // e.g.: "image/jpg"
-      data.append('file', {
-        uri:
-          Platform.OS === 'android'
-            ? image.uri
-            : image.uri.replace('file://', ''),
-        name: image.uri.split('/').pop(),
-        type: fileTypeExtended,
-      });
-    }
-    data.append('name', name);
-    data.append('email', email);
-    data.append('phone', phone);
-    data.append('specialite', JSON.stringify(specialities));
-
-    if (userType) {
-      const result = await postAxiosData(data).then(res => {
-        return res;
-      });
-
-      if (result !== null && result.data) {
-        navigation.goBack();
-      }
-    } else {
-      const result = await postAxiosDataExp(data).then(res => {
-        return res;
-      });
-
-      if (result !== null && result.data) {
-        navigation.goBack();
-      }
-    }
-  };
-
   const onImageLibraryPress = useCallback(() => {
     setVisible(false);
 
@@ -122,6 +82,46 @@ const EditBusinessProfile = ({route}) => {
 
   const image = pickerResponse?.assets && pickerResponse.assets[0];
 
+  const handlePostData = async () => {
+    const data = new FormData();
+
+    if (image !== null) {
+      const uriArray = image.uri.split('.');
+      const fileExtension = uriArray[uriArray.length - 1]; // e.g.: "jpg"
+      const fileTypeExtended = `${image.type}/${fileExtension}`; // e.g.: "image/jpg"
+      data.append('file', {
+        uri:
+          Platform.OS === 'android'
+            ? image.uri
+            : image.uri.replace('file://', ''),
+        name: image.uri.split('/').pop(),
+        type: fileTypeExtended,
+      });
+    }
+    data.append('name', name);
+    data.append('email', email);
+    data.append('phone', phone);
+    // data.append('specialite', JSON.stringify(specialities));
+
+    if (userType) {
+      const result = await postAxiosData(data).then(res => {
+        return res;
+      });
+
+      if (result !== null && result.data) {
+        navigation.goBack();
+      }
+    } else {
+      const result = await postAxiosDataExp(data).then(res => {
+        return res;
+      });
+
+      if (result !== null && result.data) {
+        navigation.goBack();
+      }
+    }
+  };
+
   return (
     <>
       <StatusBar title="Edit Business Profile" />
@@ -131,13 +131,7 @@ const EditBusinessProfile = ({route}) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{alignItems: 'center', marginTop: 20}}>
             <ImageBackground
-              source={
-                image
-                  ? {uri: image.uri}
-                  : {
-                      uri: `${config.app.api_url}/laboratories/images/${profile?.image}`,
-                    }
-              }
+              source={{uri: image?.uri}}
               style={{height: height * 0.15, width: height * 0.15}}
               imageStyle={{
                 borderRadius: height * 0.1,
@@ -174,7 +168,7 @@ const EditBusinessProfile = ({route}) => {
               </View>
             </ImageBackground>
           </View>
-          <Text>Specialities</Text>
+          {/* <Text>Specialities</Text>
           {!loading || !loadingExp ? (
             <MultiSelect
               hideTags
@@ -199,7 +193,7 @@ const EditBusinessProfile = ({route}) => {
             />
           ) : (
             <></>
-          )}
+          )} */}
           <View style={{marginTop: 20, marginBottom: 15}}>
             <TextInput
               mode="Flat"

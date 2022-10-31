@@ -4,6 +4,7 @@ import BusinessProfile from './BusinessProfile';
 import DocumentUpload from './DocumentUpload';
 import AddDocument from './AddDocument';
 import ImageGallery from './ImageGallery';
+import EditBusinessProfile from './EditBusinessProfile';
 
 export {
   Wallet,
@@ -12,4 +13,5 @@ export {
   DocumentUpload,
   ImageGallery,
   AddImage,
+  EditBusinessProfile,
 };

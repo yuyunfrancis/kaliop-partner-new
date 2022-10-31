@@ -8,11 +8,10 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {TextInput, Button} from 'react-native-paper';
 import * as ImagePicker from 'react-native-image-picker';
-import MultiSelect from 'react-native-multiple-select';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS} from '../../constants';
@@ -152,7 +151,7 @@ const EditExpertBusinessProfile = ({route}) => {
               </View>
             </ImageBackground>
           </View>
-          <Text>Specialities</Text>
+          {/* <Text>Specialities</Text>
           {!loading && (
             <MultiSelect
               hideTags
@@ -175,7 +174,7 @@ const EditExpertBusinessProfile = ({route}) => {
               styleMainWrapper={{marginTop: 10}}
               styleInputGroup={{padding: 10}}
             />
-          )}
+          )} */}
           <View style={{marginTop: 20, marginBottom: 15}}>
             <TextInput
               mode="Flat"
