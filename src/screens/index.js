@@ -32,12 +32,16 @@ import {
   ImageGallery,
   AddImage,
   EditBusinessProfile,
+  FileDetails,
 } from './businessProfile';
 
 import ExpertOrLabAppointments from './booking/ExpertOrLabAppointments';
 import MyPlanning from './planning/MyPlanning';
 import AddRange from './planning/AddRange';
 import EditRange from './planning/EditRange';
+
+import Profile from './profile/Profile';
+import EditProfile from './profile/EditProfile';
 
 export {
   Login,
@@ -72,4 +76,7 @@ export {
   ImageGallery,
   AddImage,
   EditBusinessProfile,
+  Profile,
+  EditProfile,
+  FileDetails,
 };

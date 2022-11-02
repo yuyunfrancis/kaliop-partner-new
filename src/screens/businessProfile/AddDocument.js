@@ -21,43 +21,46 @@ import {config} from '../../constants/config';
 const AddDocument = props => {
   const {t} = useTranslation();
   const {id, userType} = props.route.params;
+  console.log('====================================');
+  console.log(id);
+  console.log('====================================');
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
-  const [fileResponse, setFileResponse] = useState([]);
+  const [fileResponse, setFileResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const {user} = useContext(UserContext);
 
-  const handleDocumentSelection = useCallback(async () => {
+  const handleDocumentSelection = async () => {
+    //Opening Document Picker for selection of one file
     try {
-      const response = await DocumentPicker.pick({
+      const res = await DocumentPicker.pick({
         presentationStyle: 'fullScreen',
+        type: [DocumentPicker.types.allFiles],
       });
-      setFileResponse(response);
-      console.log('doc', fileResponse);
+      setFileResponse(res[0]);
     } catch (err) {
-      console.warn(err);
+      if (DocumentPicker.isCancel(err)) {
+        alert('Canceled from single doc picker');
+      } else {
+        //For Unknown Error
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
     }
-  }, []);
-
-  const docFileUri = fileResponse.map((file, index) => file.uri);
-  const docFileType = fileResponse.map((file, index) => file.type);
-  const docFileName = fileResponse.map((file, index) => file.name);
-
-  console.log('====================================');
-  console.log(docFileName);
-  console.log('====================================');
+  };
 
   const handleAddDocument = () => {
+    console.log('fileRESPONSE', fileResponse);
     setLoading(true);
     const formData = new FormData();
     formData.append('file', {
       uri:
         Platform.OS === 'android'
-          ? docFileUri
-          : docFileUri.replace('file://', ''),
-      name: docFileName,
-      type: docFileType,
+          ? fileResponse.uri
+          : fileResponse.uri.replace('file://', ''),
+      name: fileResponse.uri.split('/').pop(),
+      type: fileResponse.type,
     });
 
     formData.append('title', title);

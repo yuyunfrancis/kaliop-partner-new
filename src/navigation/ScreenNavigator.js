@@ -28,6 +28,9 @@ import {
   ImageGallery,
   AddImage,
   EditBusinessProfile,
+  Profile,
+  EditProfile,
+  FileDetails,
 } from '../screens';
 import DrawerContent from './DrawerContent';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -89,10 +92,13 @@ export default function ScreenNavigator(props) {
         <Stack.Screen name="AddDocument" component={AddDocument} />
         <Stack.Screen name="ImageGallery" component={ImageGallery} />
         <Stack.Screen name="AddImage" component={AddImage} />
+        <Stack.Screen name="FileDetails" component={FileDetails} />
         <Stack.Screen
           name="EditBusinessProfile"
           component={EditBusinessProfile}
         />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen
           name="My Appointments"
           component={ExpertOrLabAppointments}

@@ -165,7 +165,7 @@ const AddImage = props => {
             <View style={styles.imageContainer}>
               {image && (
                 <ImageBackground
-                  source={{uri: image.uri}}
+                  source={{uri: image?.uri}}
                   style={{
                     width: 100,
                     height: 100,

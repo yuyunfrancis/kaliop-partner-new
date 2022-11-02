@@ -1,6 +1,7 @@
 import {Dimensions, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import PDFReader from 'rn-pdf-reader-js';
+// import PDFReader from 'rn-pdf-reader-js';
+import Pdf from 'react-native-pdf';
 
 import StatusBar from '../../components/StatusBar';
 import {config} from '../../constants/config';
@@ -17,10 +18,11 @@ const FileDetails = props => {
     <>
       <StatusBar title={item.title} />
       <SafeAreaView style={{flex: 1}}>
-        <PDFReader
+        <Pdf
           source={{
             uri: `${config.app.api_url}/sheet/document/${item?.document}`,
           }}
+          style={styles.pdf}
         />
         {/* <Pdf
           source={source}
@@ -44,7 +46,13 @@ const FileDetails = props => {
 };
 
 export default FileDetails;
-const {width} = Dimensions.get('window');
-const {height} = Dimensions.get('window');
+// const {width} = Dimensions.get('window');
+// const {height} = Dimensions.get('window');
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  pdf: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+});

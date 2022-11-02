@@ -10,6 +10,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import React from 'react';
+import {COLORS} from '../constants';
 
 const ImagePickerModal = ({
   isVisible,
@@ -26,12 +27,12 @@ const ImagePickerModal = ({
       <SafeAreaView style={styles.buttons}>
         <Pressable style={styles.button} onPress={onImageLibraryPress}>
           {/* <Image style={styles.buttonIcon} source={images} /> */}
-          <Icon name="ios-image" size={25} />
+          <Icon name="ios-image" size={25} color={COLORS.primary} />
           <Text style={styles.buttonText}>Library</Text>
         </Pressable>
         <Pressable style={styles.button} onPress={onCameraPress}>
           {/* <Image style={styles.buttonIcon} source={images.camera} /> */}
-          <Icon name="ios-camera" size={25} />
+          <Icon name="ios-camera" size={25} color={COLORS.primary} />
 
           <Text style={styles.buttonText}>Camera</Text>
         </Pressable>

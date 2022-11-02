@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Drawer} from 'react-native-paper';
 import {COLORS, SIZES, FONTS, icons} from '../constants';
 import UserContext from '../contexts/UserContext';
@@ -35,6 +35,20 @@ const DrawerContent = props => {
   const {t} = useTranslation();
   const {user, logoutUser} = useContext(UserContext);
   const [state, setUser] = useState(null);
+  const [seedVendor, setSeedVendor] = useState(false);
+  const [agroExpert, setAgroExpert] = useState(false);
+  const [laboratory, setLaboratory] = useState(false);
+
+  useEffect(() => {
+    const userProfile = user?.profil?.map(users => {
+      if (users.name === 'AgroExpert' || users.name === 'Laboratory') {
+        setAgroExpert(true);
+        setLaboratory(true);
+      } else if (users.name === 'SeedVendor') {
+        setSeedVendor(true);
+      }
+    });
+  }, []);
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.primary}}>
@@ -110,16 +124,23 @@ const DrawerContent = props => {
                 icon={icons.profile_pic}
                 onPress={() => props.navigation.navigate('Profile')}
               /> */}
-              <CustomDrawerItem
-                label={t('appoinments')}
-                icon={icons.access}
-                onPress={() => props.navigation.navigate('My Appointments')}
-              />
-              <CustomDrawerItem
-                label={t('myService')}
-                icon={icons.access}
-                onPress={() => props.navigation.navigate('Services')}
-              />
+
+              {agroExpert || laboratory ? (
+                <>
+                  <CustomDrawerItem
+                    label={t('appoinments')}
+                    icon={icons.access}
+                    onPress={() => props.navigation.navigate('My Appointments')}
+                  />
+                  <CustomDrawerItem
+                    label={t('myService')}
+                    icon={icons.access}
+                    onPress={() => props.navigation.navigate('Services')}
+                  />
+                </>
+              ) : (
+                <></>
+              )}
               <CustomDrawerItem
                 label={t('logout')}
                 icon={icons.logout}
