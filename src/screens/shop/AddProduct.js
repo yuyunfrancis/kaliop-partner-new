@@ -15,24 +15,22 @@ import {
 } from 'react-native';
 import {Divider} from 'react-native-elements';
 import {Button} from 'react-native-paper';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
-import BottomSheet from 'reanimated-bottom-sheet';
-// import {launchCamera} from 'react-native-image-picker';
-import ImagePicker from 'react-native-image-crop-picker';
+import * as ImagePicker from 'react-native-image-picker';
 import {Picker} from '@react-native-picker/picker';
 import {config} from '../../constants/config';
 import UserContext from '../../contexts/UserContext';
-// import RNPickerSelect from 'react-native-picker-select';
 import usePostAxiosData from '../../hooks/usePostAxiosData';
 import StatusBar from '../../components/StatusBar';
 import AddTextField from '../../components/utils/AddTextField';
 import {COLORS} from '../../constants';
+import ImagePickerModal from '../../components/ImagePickerModal';
 
 const AddProduct = ({route}) => {
   const [pokemon, setPokemon] = useState();
@@ -55,6 +53,8 @@ const AddProduct = ({route}) => {
   };
 
   //DropDown permissions
+  const [pickerResponse, setPickerResponse] = useState(null);
+  const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(false);
@@ -70,14 +70,6 @@ const AddProduct = ({route}) => {
   const [selected, setSelected] = useState();
   const [photo, setPhoto] = useState();
   const [galleryPhoto, setGalleryPhoto] = useState();
-  // const [openActionSheet, image] = useImagePicker();
-
-  const handleValueChange = (itemValue, itemIndex) => setPokemon(itemValue);
-  const handleCat = (itemValue, itemIndex) => setPokemon(itemValue);
-  const handleCurr = (itemValue, itemIndex) => setPokemon(itemValue);
-  const handleUnit = (itemValue, itemIndex) => setPokemon(itemValue);
-  const handleMainCat = (itemValue, itemIndex) => setMainCateg(value);
-
   const fetchData = () => {
     const unityUrl = `${config.app.api_url}/unity`;
     const currencyUrl = `${config.app.api_url}/currency`;
@@ -135,69 +127,53 @@ const AddProduct = ({route}) => {
     fetchData();
   }, []);
 
-  //Image picker
-  let options = {
-    saveToPhotos: true,
-    mediaType: 'photo',
-  };
+  const onImageLibraryPress = useCallback(() => {
+    setVisible(false);
 
-  const takePhotoFromCamera = () => {
-    sheetRef.current.snapTo(1);
-    ImagePicker.openCamera({
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 300,
-      cropping: true,
-      compressImageQuality: 0.7,
-    }).then(image => {
-      console.log(image);
-      setPhoto(image.path);
-      // sheetRef.current.snapTo(1);
-    });
-  };
+    const options = {
+      selectionLimit: 1,
+      mediaType: 'photo',
+      includeBase64: false,
+    };
+    ImagePicker.launchImageLibrary(options, setPickerResponse);
+  }, []);
 
-  const choosePhotoFromLibrary = () => {
-    sheetRef.current.snapTo(1);
-    ImagePicker.openPicker({
-      width: 300,
-      height: 300,
-      cropping: true,
-      compressImageQuality: 0.7,
-    }).then(image => {
-      console.log(image);
-      setPhoto(image.path);
-      // sheetRef.current.snapTo(1);
-    });
-  };
+  const onCameraPress = useCallback(() => {
+    setVisible(false);
+    const options = {
+      saveToPhotos: true,
+      mediaType: 'photo',
+      includeBase64: false,
+    };
+    ImagePicker.launchCamera(options, setPickerResponse);
+  }, []);
+
+  const image = pickerResponse?.assets && pickerResponse.assets[0];
 
   const openGallery = async () => {
     const result = await launchImageLibrary(options);
     setGalleryPhoto(result.assets[0].uri);
   };
 
-  console.log('====================================');
-  console.log('Photo', rate);
-  console.log('====================================');
-
   const [loading, postAxiosData] = usePostAxiosData(`products`, 'POST');
 
   const handleAddProduct = async () => {
     const data = new FormData();
 
-    // if (photo !== null) {
-    //   console.log(photo.uri);
-    //   const uriArray = photo.uri.split('.');
-    //   const fileExtension = uriArray[uriArray.length - 1]; // e.g.: "jpg"
-    //   const fileTypeExtended = `${photo.type}/${fileExtension}`; // e.g.: "image/jpg"
-    //   data.append('file', {
-    //     uri:
-    //       Platform.OS === 'android'
-    //         ? photo.uri
-    //         : photo.uri.replace('file://', ''),
-    //     name: photo.uri.split('/').pop(),
-    //     type: fileTypeExtended,
-    //   });
-    // }
-    data.append('file', photo);
+    if (image !== null) {
+      const uriArray = image.uri.split('.');
+      const fileExtension = uriArray[uriArray.length - 1];
+
+      data.append('file', {
+        uri:
+          Platform.OS === 'android'
+            ? image.uri
+            : image.uri.replace('file://', ''),
+        name: image.uri.split('/').pop(),
+        type: image.type,
+      });
+    }
+
     data.append('name', name);
     data.append('price', price);
     data.append('currencyId', currency);
@@ -229,24 +205,6 @@ const AddProduct = ({route}) => {
       setYield('');
     }
   };
-
-  // const productImage = require('../../assets/images/beans1.jpg');
-
-  // const pickImage = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-
-  //   console.log(result);
-
-  //   if (!result.cancelled) {
-  //     setImage(result.uri);
-  //   }
-  // };
 
   const renderContent = () => (
     <View
@@ -457,17 +415,19 @@ const AddProduct = ({route}) => {
             alignSelf: 'flex-start',
           }}>
           <View style={styles.imageContainer}>
-            <ImageBackground
-              source={{uri: photo !== null ? photo : ''}}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 8,
-              }}></ImageBackground>
+            {image && (
+              <ImageBackground
+                source={{uri: image.uri}}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 8,
+                }}></ImageBackground>
+            )}
           </View>
 
           <TouchableOpacity
-            onPress={() => sheetRef.current.snapTo(0)}
+            onPress={() => setVisible(true)}
             style={styles.cameraIconView}>
             <Icon name="ios-camera-outline" size={36} color="#7D7D7D" />
           </TouchableOpacity>
@@ -512,7 +472,7 @@ const AddProduct = ({route}) => {
           selectedValue={place}
           onValueChange={value => {
             if (value != null) {
-              setColor(value);
+              setPlace(value);
             }
           }}>
           {places.map((place, index) => (
@@ -533,7 +493,7 @@ const AddProduct = ({route}) => {
           ))}
         </Picker>
       </KeyboardAwareScrollView>
-      <BottomSheet
+      {/* <BottomSheet
         ref={sheetRef}
         snapPoints={[230, 0]}
         borderRadius={10}
@@ -541,6 +501,13 @@ const AddProduct = ({route}) => {
         renderContent={renderContent}
         callbackNode={fall}
         enabledGestureInteraction={true}
+      /> */}
+
+      <ImagePickerModal
+        isVisible={visible}
+        onClose={() => setVisible(false)}
+        onImageLibraryPress={onImageLibraryPress}
+        onCameraPress={onCameraPress}
       />
     </>
   );

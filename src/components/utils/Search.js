@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Dimensions, TextInput} from 'react-native';
-import {Feather} from '@expo/vector-icons';
+import Feather from 'react-native-vector-icons/Feather';
 import React from 'react';
 
 const Search = ({
@@ -25,7 +25,7 @@ const Search = ({
         {/* search Icon */}
         <Feather
           name="search"
-          size={22}
+          size={18}
           color={colorIcon}
           style={{marginLeft: 1, marginRight: 3}}
         />
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   searchBar__clicked: {
-    padding: 10,
+    padding: 8,
     flexDirection: 'row',
 
     // backgroundColor: "#E6EDE4",

@@ -7,6 +7,10 @@ import EditProduct from './EditProduct';
 import Delivery from './Delivery';
 import EditDelivery from './EditDelivery';
 import AddNewDelivery from './AddNewDelivery';
+import OrderDetails from './OrderDetails';
+import Order from './Order';
+import ShopProfile from './ShopProfile';
+import EditShop from './EditShop';
 
 export {
   ShopHome,
@@ -18,4 +22,8 @@ export {
   Delivery,
   EditDelivery,
   AddNewDelivery,
+  OrderDetails,
+  Order,
+  ShopProfile,
+  EditShop,
 };

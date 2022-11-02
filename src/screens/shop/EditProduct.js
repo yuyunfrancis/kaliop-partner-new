@@ -1,9 +1,7 @@
 import {
   ImageBackground,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -36,10 +34,6 @@ const EditProduct = ({route}) => {
   const [mainCategs, setMainCategs] = useState([]);
 
   const [image, setImage] = useState('');
-
-  // const [openActionSheet, image] = useImagePicker();
-  // const [city, setCity] = useState(shop.city);
-  // const [loading, setLoading] = useState(false);
 
   const getCategories = id => {
     const categoryUrl = `${config.app.api_url}/category/main-category/${id}`;
@@ -139,19 +133,6 @@ const EditProduct = ({route}) => {
             </TouchableOpacity>
           </View>
 
-          {/* <RNPickerSelect
-            onValueChange={value => {
-              if (value != null) {
-                getCategories(value);
-                setMainCateg(value);
-              }
-            }}
-            selected={selected}
-            items={mainCategs}
-            placeholder={{label: 'Select Main Category', value: null}}
-            style={pickerSelectStyles}
-          /> */}
-
           <Picker
             placeholder={t('category')}
             style={[styles.pickerStyles, {marginTop: 15}]}
@@ -186,55 +167,13 @@ const EditProduct = ({route}) => {
               <Picker.Item key={index} label={cat.label} value={cat.value} />
             ))}
           </Picker>
-          {/* <RNPickerSelect
-            onValueChange={value => {
-              if (value != null) {
-                setCategory(value);
-              }
-            }}
-            selected={selected}
-            items={categories}
-            placeholder={{
-              label:
-                productInfo.category.name !== null
-                  ? productInfo.category.name
-                  : 'Select Category',
-              value: null,
-            }}
-            style={pickerSelectStyles}
-          /> */}
-
-          {/* <RNPickerSelect
-            onValueChange={(value) => {
-              if (value != null) {
-                setCategories(value);
-              }
-            }}
-            selected={selected}
-            items={categories}
-            placeholder={{
-              label:
-                productInfo.category.name !== null
-                  ? productInfo.category.name
-                  : "Select Category",
-              value: null,
-            }}
-            style={pickerSelectStyles}
-          /> */}
 
           <View style={styles.addBtn}>
             <Button
               labelStyle={{fontSize: 14}}
               style={{paddingTop: 3, paddingBottom: 3, paddingRight: 2}}
               mode="contained"
-              icon="content-save-outline"
-              // loading={loading}
-              // disabled={
-              //   loading || !(name && category && currency && unity && price)
-              // }
-              // onPress={() => handleAddProduct()}
-            >
-              {/* {loading ? "Saving..." : "Save"} */}
+              icon="content-save-outline">
               Update Product
             </Button>
           </View>

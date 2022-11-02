@@ -7,9 +7,30 @@ import {
   Delivery,
   EditDelivery,
   EditProduct,
+  Order,
+  OrderDetails,
   ProductDetails,
   ShopDetails,
   ShopHome,
+  ShopProfile,
+  EditShop,
+  ServiceHome,
+  ServiceDetails,
+  EditService,
+  AddNewService,
+  Wallet,
+  ExpertOrLabAppointments,
+  AddRange,
+  EditRange,
+  BusinessProfile,
+  DocumentUpload,
+  AddDocument,
+  ImageGallery,
+  AddImage,
+  EditBusinessProfile,
+  Profile,
+  EditProfile,
+  FileDetails,
 } from '../screens';
 import DrawerContent from './DrawerContent';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -57,6 +78,33 @@ export default function ScreenNavigator(props) {
         <Stack.Screen name="AddNewDelivery" component={AddNewDelivery} />
         <Stack.Screen name="Delivery" component={Delivery} />
         <Stack.Screen name="EditDelivery" component={EditDelivery} />
+        <Stack.Screen name="OrderDetails" component={OrderDetails} />
+        <Stack.Screen name="Order" component={Order} />
+        <Stack.Screen name="ShopProfile" component={ShopProfile} />
+        <Stack.Screen name="EditShop" component={EditShop} />
+        <Stack.Screen name="Services" component={ServiceHome} />
+        <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
+        <Stack.Screen name="EditService" component={EditService} />
+        <Stack.Screen name="AddNewService" component={AddNewService} />
+        <Stack.Screen name="My Wallet" component={Wallet} />
+        <Stack.Screen name="Business Profile" component={BusinessProfile} />
+        <Stack.Screen name="Document Upload" component={DocumentUpload} />
+        <Stack.Screen name="AddDocument" component={AddDocument} />
+        <Stack.Screen name="ImageGallery" component={ImageGallery} />
+        <Stack.Screen name="AddImage" component={AddImage} />
+        <Stack.Screen name="FileDetails" component={FileDetails} />
+        <Stack.Screen
+          name="EditBusinessProfile"
+          component={EditBusinessProfile}
+        />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen
+          name="My Appointments"
+          component={ExpertOrLabAppointments}
+        />
+        <Stack.Screen name="AddRange" component={AddRange} />
+        <Stack.Screen name="EditRange" component={EditRange} />
       </Stack.Navigator>
     );
   };

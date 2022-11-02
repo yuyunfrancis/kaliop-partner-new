@@ -1,23 +1,39 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Bulb from 'react-native-vector-icons/MaterialCommunityIcons';
 import {View} from 'react-native';
-
-import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 
 import BottomSheetScreen from './BottomSheetScreen';
+import {useNavigation} from '@react-navigation/native';
+import UserContext from '../contexts/UserContext';
 import {COLORS} from '../constants';
-import {Home} from '../screens';
+import {Home, MyPlanning, Profile, Wallet} from '../screens';
 
 const Tab = createBottomTabNavigator();
 
 const BottomNavigator = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const {user} = useContext(UserContext);
+  const [seedVendor, setSeedVendor] = useState(false);
+  const [agroExpert, setAgroExpert] = useState(false);
+  const [laboratory, setLaboratory] = useState(false);
+
+  useEffect(() => {
+    const userProfile = user?.profil?.map(users => {
+      if (users.name === 'AgroExpert' || users.name === 'Laboratory') {
+        setAgroExpert(true);
+        setLaboratory(true);
+      } else if (users.name === 'SeedVendor') {
+        setSeedVendor(true);
+      }
+    });
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -26,9 +42,9 @@ const BottomNavigator = () => {
           borderTopWidth: 0,
           elevation: 0,
         },
-        headerShown: false,
         showLabel: true,
         tabBarActiveTintColor: COLORS.primary,
+        headerShown: false,
       }}>
       <Tab.Screen
         name="HomeScreen"
@@ -40,16 +56,20 @@ const BottomNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Booking Plan"
-        component={Home}
-        options={{
-          tabBarLabel: t('booking'),
-          tabBarIcon: ({color}) => (
-            <Icons name="md-calendar" color={color} size={22} />
-          ),
-        }}
-      />
+      {agroExpert || laboratory ? (
+        <Tab.Screen
+          name="Booking Plan"
+          component={MyPlanning}
+          options={{
+            tabBarLabel: t('booking'),
+            tabBarIcon: ({color}) => (
+              <Icons name="md-calendar" color={color} size={22} />
+            ),
+          }}
+        />
+      ) : (
+        <></>
+      )}
       <Tab.Screen
         name="Search"
         component={AddScreenComponent}
@@ -76,7 +96,7 @@ const BottomNavigator = () => {
       />
       <Tab.Screen
         name="Wallet"
-        component={Home}
+        component={Wallet}
         options={{
           tabBarLabel: t('mywallet'),
           tabBarIcon: ({color}) => (
@@ -86,7 +106,7 @@ const BottomNavigator = () => {
       />
       <Tab.Screen
         name="BusinessProfile"
-        component={Home}
+        component={Profile}
         options={{
           tabBarLabel: t('profile'),
           tabBarIcon: ({color}) => (

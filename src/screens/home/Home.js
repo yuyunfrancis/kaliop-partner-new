@@ -10,34 +10,45 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {COLORS} from '../../constants';
-import IconBox from '../../components/utils/IconBox';
-import Shop from 'react-native-vector-icons/Entypo';
+import Icons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import CustomStatusBar from '../../components/CustomStatusBar';
 import {STYLES} from '../../constants/theme';
 import UserContext from '../../contexts/UserContext';
 import {useTranslation} from 'react-i18next';
-import {Button} from 'react-native-paper';
-import Animated from 'react-native-reanimated';
-import BottomSheet from 'reanimated-bottom-sheet';
 
 export default function Home() {
   const {user} = useContext(UserContext);
   const {t} = useTranslation();
 
+  const [seedVendor, setSeedVendor] = React.useState(false);
+  const [agroExpert, setAgroExpert] = React.useState(false);
+  const [laboratory, setLaboratory] = React.useState(false);
+
+  React.useEffect(() => {
+    const userProfile = user?.profil?.map(users => {
+      if (users?.name === 'AgroExpert' || users?.name === 'Laboratory') {
+        setAgroExpert(true);
+        setLaboratory(true);
+      } else if (users.name === 'SeedVendor') {
+        setSeedVendor(true);
+      }
+    });
+  }, []);
+
   const navigation = useNavigation();
-  const userProfile = user?.profil?.map(users => users.name);
+  // const userProfile = user?.profil?.map(users => users.name);
 
   const menuExpert = [
     {
       id: 1,
       title: t('appoinments'),
       description: t('desc1'),
-      // icon: 'book-online',
       icon: (
-        <Shop
-          name="shop"
+        <Icon
+          name="calendar-clock"
           style={{alignSelf: 'center'}}
           size={60}
           color={COLORS.primary}
@@ -55,8 +66,8 @@ export default function Home() {
       description: t('desc2'),
       // icon: 'ios-person-outline',
       icon: (
-        <Shop
-          name="shop"
+        <Icons
+          name="ios-business-sharp"
           style={{alignSelf: 'center'}}
           size={60}
           color={COLORS.primary}
@@ -74,8 +85,8 @@ export default function Home() {
       description: t('desc3'),
       // icon: 'ios-wallet-outline',
       icon: (
-        <Shop
-          name="shop"
+        <Icons
+          name="ios-wallet"
           style={{alignSelf: 'center'}}
           size={60}
           color={COLORS.primary}
@@ -95,8 +106,8 @@ export default function Home() {
       title: t('market'),
       description: t('desc4'),
       icon: (
-        <Shop
-          name="shop"
+        <Icons
+          name="ios-basket-sharp"
           style={{alignSelf: 'center'}}
           size={60}
           color={COLORS.primary}
@@ -113,8 +124,8 @@ export default function Home() {
       description: t('desc3'),
       // icon: 'ios-wallet-outline',\
       icon: (
-        <Shop
-          name="shop"
+        <Icons
+          name="ios-wallet"
           style={{alignSelf: 'center'}}
           size={60}
           color={COLORS.primary}
@@ -220,8 +231,7 @@ export default function Home() {
             //     ? menuSeed
             //     : menuExpert
             // }
-
-            data={menuSeed}
+            data={agroExpert || laboratory ? menuExpert : menuSeed}
             scrollEnabled={true}
             renderItem={renderItem}
             keyExtractor={(item, index) => index}

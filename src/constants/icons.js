@@ -11,24 +11,20 @@ const home = require('../../assets/icons/home.png');
 const location = require('../../assets/icons/location.png');
 const logout = require('../../assets/icons/logout.png');
 const notification = require('../../assets/icons/notification.png');
-const profile = require('../../assets/icons/profile.png');
 const setting = require('../../assets/icons/setting.png');
 const star = require('../../assets/icons/star.png');
 const wallet = require('../../assets/icons/wallet.png');
 const help = require('../../assets/icons/help.png');
 const logo = require('../../assets/icons/small-logo.png');
 const back = require('../../assets/images/back.png');
-const menu1 = require('../../assets/icons/menu.svg');
 const dotsTop = require('../../assets/icons/dotsTop.png');
 const dotsBottom = require('../../assets/icons/dotsBottom.png');
 const menubar = require('../../assets/icons/menubar.png');
 const right_arrow = require('../../assets/icons/right-arrow.png');
 const disc = require('../../assets/images/disc.png');
 const dashboard = require('../../assets/icons/dashboard.png');
-const profile_pic = require('../../assets/icons/profile-pic.png');
 const notifications_outline = require('../../assets/icons/notifications-outline.png');
 const access = require('../../assets/icons/access.png');
-const profile1 = require('../../assets/images/profile.png');
 import Icon2 from 'react-native-vector-icons/Ionicons';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -71,22 +67,18 @@ export default {
   dotsTop,
   dotsBottom,
   notification,
-  profile,
   setting,
   star,
   wallet,
   help,
   logo,
   back,
-  menu1,
   menubar,
   right_arrow,
   disc,
   dashboard,
-  profile_pic,
   notifications_outline,
   access,
-  profile1,
   packs,
   order,
   subs,

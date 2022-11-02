@@ -17,9 +17,11 @@ import {Divider} from 'react-native-elements';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, icons} from '../constants';
+import UserContext from '../contexts/UserContext';
 
 const BottomSheetScreen = () => {
   const navigation = useNavigation();
+  const {user, logoutUser} = React.useContext(UserContext);
 
   const [isModalVisible, setModalVisible] = React.useState(false);
 
@@ -39,6 +41,21 @@ const BottomSheetScreen = () => {
     sheetRef.current.snapTo(1);
   };
 
+  const [seedVendor, setSeedVendor] = React.useState(false);
+  const [agroExpert, setAgroExpert] = React.useState(false);
+  const [laboratory, setLaboratory] = React.useState(false);
+
+  React.useEffect(() => {
+    const userProfile = user?.profil?.map(users => {
+      if (users.name === 'AgroExpert' || users.name === 'Laboratory') {
+        setAgroExpert(true);
+        setLaboratory(true);
+      } else if (users.name === 'SeedVendor') {
+        setSeedVendor(true);
+      }
+    });
+  }, []);
+
   const items = [
     {
       id: 1,
@@ -51,15 +68,24 @@ const BottomSheetScreen = () => {
     },
     {
       id: 2,
-      label: t('orders'),
-      icon: icons.order,
-      show: function () {
-        navigation.navigate('Orders');
-        sheetRef.current.snapTo(1);
-      },
+      label: t('language'),
+      icon: icons.language,
+      show: toggleModal,
     },
+    // {
+    //   id: 5,
+    //   label: t("help"),
+    //   icon: icons.shop,
+    //   show: function () {
+    //     navigation.navigate("Market");
+    //     sheetRef.current.snapTo(1);
+    //   },
+    // },
+  ];
+
+  const item1 = [
     {
-      id: 3,
+      id: 1,
       label: t('shop'),
       icon: icons.subs,
       show: function () {
@@ -67,17 +93,8 @@ const BottomSheetScreen = () => {
         sheetRef.current.snapTo(1);
       },
     },
-    // {
-    //   id: 4,
-    //   label: t("documents"),
-    //   icon: icons.download,
-    //   show: function () {
-    //     navigation.navigate("AddDocument");
-    //     sheetRef.current.snapTo(1);
-    //   },
-    // },
     {
-      id: 4,
+      id: 2,
       label: t('language'),
       icon: icons.language,
       show: toggleModal,
@@ -145,7 +162,7 @@ const BottomSheetScreen = () => {
       />
       <View>
         <FlatList
-          data={items}
+          data={agroExpert || laboratory ? items : item1}
           numColumns={3}
           renderItem={renderItem}
           keyExtractor={item => item.id}
