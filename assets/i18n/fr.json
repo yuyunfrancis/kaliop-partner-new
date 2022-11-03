@@ -121,6 +121,8 @@
     "addServiceImg": "Ajouter une image",
     "addDoc": "Ajouter un document",
     "docTitle": "Entrez le titre du document",
-    "docUpload": "Téléchargement de documents"
+    "docUpload": "Téléchargement de documents",
+    "norange": "Hors gamme",
+    "passed": "Passé"
   }
 }
