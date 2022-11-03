@@ -6,23 +6,23 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {io} from 'socket.io-client';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { io } from 'socket.io-client';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CountDown from 'react-native-countdown-component';
 
-import {COLORS, icons} from '../../constants';
+import { COLORS, icons } from '../../constants';
 import ChatInput from './ChatInput';
 import MessageList from './MessageList';
-import {config} from '../../constants/config';
+import { config } from '../../constants/config';
 import UserContext from '../../contexts/UserContext';
 
 // const socket = io(`${config.app.chat_api_url}`);
 
 const ChatScreen = props => {
-  const {appointment} = props.route.params;
-  const {user} = useContext(UserContext);
+  const { appointment } = props.route.params;
+  const { user } = useContext(UserContext);
   const navigation = useNavigation();
   const [messages, setMessages] = useState([]);
   const socket = useRef(io(`${config.app.chat_api_url}`)).current;
@@ -70,7 +70,7 @@ const ChatScreen = props => {
     socket.on('connect', () => {
       console.log('Connected');
       setIsConnected(true);
-      socket.emit('joinRoom', {username: user.phone, room: appointment._id});
+      socket.emit('joinRoom', { username: user.phone, room: appointment._id });
     });
 
     socket.on('disconnect', () => {
@@ -79,7 +79,7 @@ const ChatScreen = props => {
       navigation.goBack();
     });
 
-    socket.on('roomUsers', ({room, users}) => {
+    socket.on('roomUsers', ({ room, users }) => {
       // outputRoomName(room);
       // outputUsers(users);
       setToast(true);
@@ -126,7 +126,7 @@ const ChatScreen = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       {/* <ChatHeader
                 typing={typing}
                 username={data.username}
@@ -149,10 +149,10 @@ const ChatScreen = props => {
               </View>
             </TouchableOpacity>
             <View style={styles.options}>
-              {/* <TouchableOpacity style={{ paddingHorizontal: 5 }}
-                                    onPress={() => navigation.navigate("CallScreen", { appointment })}>
-                                    <Icon name="video-camera" size={20} color={COLORS.white} />
-                                </TouchableOpacity> */}
+              <TouchableOpacity style={{ paddingHorizontal: 5 }}
+                onPress={() => navigation.navigate("CallScreen", { appointment })}>
+                <Icon name="video-camera" size={20} color={COLORS.white} />
+              </TouchableOpacity>
               {/*  <TouchableOpacity style={{ paddingHorizontal: 20 }}>*/}
               {/*    <Icon name="ellipsis-v" size={20} color={COLORS.white} />*/}
               {/*  </TouchableOpacity>*/}
@@ -166,14 +166,14 @@ const ChatScreen = props => {
         until={seconds}
         //duration of countdown in seconds
         timetoShow={['H', 'M', 'S']}
-        timeLabels={{h: '', m: '', s: ''}}
+        timeLabels={{ h: '', m: '', s: '' }}
         //formate to show
         onFinish={() => handleEnd()}
         //on Finish call
         onPress={() => console.log('hello')}
         //on Press call
         size={10}
-        style={{paddingHorizontal: 8, margin: 15}}
+        style={{ paddingHorizontal: 8, margin: 15 }}
       />
       {!call ? (
         <MessageList

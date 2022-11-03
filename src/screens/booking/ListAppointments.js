@@ -43,66 +43,49 @@ const ListAppointments = ({appointments}) => {
   const end = new Date(appointments?.range?.end);
 
   useEffect(() => {
-    const bookDate = new Date(appointments.bookDate).getDate();
-    const now = new Date().getDate();
+    const today = new Date();
+    const now = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
+    const bookDate = new Date(appointments.bookDate);
+    const isAfter = moment(bookDate).isAfter(now);
+    const isBefore = moment(bookDate).isBefore(now);
+    const isSame = moment(bookDate).isSame(now);
 
-    if (now < bookDate) {
+    if (isBefore) {
       setExpired(false);
       setReady(false);
-      setText(t('passed'));
-    } else if (now > bookDate) {
-      setExpired(false);
-      setReady(false);
-      setText(t('soon'));
-    } else {
+      setText(t("passed"));
+    } else if(isSame || isAfter){
       if (appointments.range != null) {
-        const t1 = new Date(appointments?.range?.start);
-        const t2 = new Date(appointments?.range?.end);
-        let dif = Math.abs(t1.getTime() - t2.getTime()) / 1000;
-        console.log(dif);
+        const nowD = moment(new Date()).utcOffset('+0100').format('HH:mm:ss');
+        const t1 = moment(new Date(appointments?.range?.start)).utcOffset('+0100').format('HH:mm:ss');
+        const t2 = moment(new Date(appointments?.range?.end)).utcOffset('+0100').format('HH:mm:ss');
+        // let dif = Math.abs(t1.getTime() - t2.getTime()) / 1000;
+        console.log(nowD, t1, t2);
         setReady(true);
-        if (dif <= 0) {
+        if (nowD.toString() > t1.toString() && nowD.toString() >= t2.toString()) {
           setExpired(true);
           setReady(false);
-          setText(t('finished'));
-        } else if (dif > 0 && new Date().getTime() == t1.getTime()) {
+          setText(t("finished"));
+        } else if (nowD.toString() >= t1.toString() && nowD.toString() < t2.toString()) {
           setExpired(false);
           setReady(true);
-          setText(t('start'));
-        } else if (
-          dif > 0 &&
-          new Date().getTime() < t1.getTime() &&
-          new Date().getTime() < t2.getTime()
-        ) {
-          setExpired(false);
-          setReady(true);
-          setText(t('start'));
-        } else if (
-          dif > 0 &&
-          new Date().getTime() < t1.getTime() &&
-          new Date().getTime() > t2.getTime()
-        ) {
-          setExpired(true);
-          setReady(false);
-          setText(t('passed'));
-        } else if (dif > 0 && new Date().getTime() > t1.getTime()) {
+          setText(t("start"));
+        } else if (nowD.toString() < t1.toString() && nowD.toString() < t2.toString()) {
           setExpired(false);
           setReady(false);
-          const h = moment
-            .utc(moment(t1, 'HH:mm:ss').diff(moment(new Date(), 'HH:mm:ss')))
-            .format('HH');
-          const m = moment
-            .utc(moment(t1, 'HH:mm:ss').diff(moment(new Date(), 'HH:mm:ss')))
-            .format('mm');
+          const h = moment.utc(moment(new Date(appointments?.range?.start), "HH:mm:ss").diff(moment(new Date(), "HH:mm:ss"))).format("HH");
+          const m = moment.utc(moment(new Date(appointments?.range?.start), "HH:mm:ss").diff(moment(new Date(), "HH:mm:ss"))).format("mm");
           console.log(h);
-          setText(
-            t('in') + ' ' + h + ' ' + t('hours') + ' ' + m + ' ' + t('minutes'),
-          );
+          setText(t("in") + " " + h + " " + t("hours") + " " + m + " " + t("minutes"));
+        } else {
+          setExpired(true);
+          setReady(false);
+          setText(t("passed"));
         }
       } else {
         setExpired(true);
         setReady(false);
-        setText(t('norange'));
+        setText(t("norange"));
       }
     }
   }, [appointments]);
@@ -249,7 +232,9 @@ const ListAppointments = ({appointments}) => {
             )}
 
             <View style={styles.buttonContainer}>
-              <Button mode="outlined" text={t('view')} onPress={showModal} />
+              <Button mode="outlined" text={t('view')} onPress={navigation.navigate('ChatScreen', {
+                        appointment: appointments,
+                      })} />
             </View>
           </View>
         </View>
