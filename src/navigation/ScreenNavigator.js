@@ -31,6 +31,7 @@ import {
   Profile,
   EditProfile,
   FileDetails,
+  ChatScreen,
 } from '../screens';
 import DrawerContent from './DrawerContent';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -105,6 +106,8 @@ export default function ScreenNavigator(props) {
         />
         <Stack.Screen name="AddRange" component={AddRange} />
         <Stack.Screen name="EditRange" component={EditRange} />
+
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
       </Stack.Navigator>
     );
   };

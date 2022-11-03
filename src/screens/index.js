@@ -43,6 +43,8 @@ import EditRange from './planning/EditRange';
 import Profile from './profile/Profile';
 import EditProfile from './profile/EditProfile';
 
+import {ChatScreen} from './chat';
+
 export {
   Login,
   Verification,
@@ -79,4 +81,5 @@ export {
   Profile,
   EditProfile,
   FileDetails,
+  ChatScreen,
 };
