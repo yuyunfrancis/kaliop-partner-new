@@ -121,6 +121,8 @@
     "addServiceImg": "Add Image",
     "addDoc": "Add Document",
     "docTitle": "Enter Title of Document",
-    "docUpload": "Document Upload"
+    "docUpload": "Document Upload",
+    "norange": "Not in Range",
+    "passed": "Passed"
   }
 }

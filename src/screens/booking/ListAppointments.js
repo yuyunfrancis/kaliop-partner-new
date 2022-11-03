@@ -387,6 +387,18 @@ const ListAppointments = ({appointments}) => {
               height={20}
               color={COLORS.grey}
             />
+
+            <View style={{marginTop: 10, alignSelf: 'flex-end'}}>
+              <Button
+                text="Chat"
+                onPress={() => {
+                  navigation.navigate('ChatScreen', {
+                    appointment: appointments,
+                  }),
+                    hideModal();
+                }}
+              />
+            </View>
           </View>
         </Modal>
       </Portal>
