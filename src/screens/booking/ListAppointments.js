@@ -232,9 +232,9 @@ const ListAppointments = ({appointments}) => {
             )}
 
             <View style={styles.buttonContainer}>
-              <Button mode="outlined" text={t('view')} onPress={navigation.navigate('ChatScreen', {
-                        appointment: appointments,
-                      })} />
+              <Button mode="outlined" text={t('view')} onPress={()=>{
+                showModal()
+              }} />
             </View>
           </View>
         </View>

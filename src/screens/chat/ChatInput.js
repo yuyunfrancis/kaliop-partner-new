@@ -5,11 +5,10 @@ import {
   TouchableOpacity,
   TextInput,
   Platform,
-  KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, {useState} from 'react';
-import {COLORS} from '../../constants';
+import { COLORS } from '../../constants';
 
 const ChatInput = props => {
   const [message, setMessage] = useState('');

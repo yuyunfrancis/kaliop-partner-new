@@ -1,11 +1,8 @@
 import {
   StyleSheet,
-  Text,
-  View,
   ScrollView,
-  KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useRef} from 'react';
 import Message from './Message';
 
 const MessageList = props => {

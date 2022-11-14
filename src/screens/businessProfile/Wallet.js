@@ -131,7 +131,6 @@ const Wallet = () => {
           <Button
             labelStyle={{fontSize: 16}}
             mode="contained"
-            disabled={totalEarning < 2000}
             uppercase={false}
             onPress={() => navigation.navigate('Withdraw')}
             style={{

@@ -44,6 +44,7 @@ import Profile from './profile/Profile';
 import EditProfile from './profile/EditProfile';
 
 import {ChatScreen} from './chat';
+import {CallScreen} from './chat';
 
 export {
   Login,
@@ -82,4 +83,5 @@ export {
   EditProfile,
   FileDetails,
   ChatScreen,
+  CallScreen,
 };

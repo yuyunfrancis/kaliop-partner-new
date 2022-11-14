@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import React, { useContext } from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   AddNewDelivery,
   AddProduct,
@@ -32,19 +32,21 @@ import {
   EditProfile,
   FileDetails,
   ChatScreen,
+  CallScreen,
 } from '../screens';
 import DrawerContent from './DrawerContent';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import jwt_decode from 'jwt-decode';
 import BottomNavigator from './BottomNavigator';
 import UserContext from '../contexts/UserContext';
+import Withdraw from '../screens/profile/Withdraw';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 const isAuthenticated = token => {
   try {
-    const {exp} = jwt_decode(token);
+    const { exp } = jwt_decode(token);
     if (new Date().getTime() / 1000 >= exp) {
       console.log('FALSE');
       return false;
@@ -59,7 +61,7 @@ const isAuthenticated = token => {
 
 export default function ScreenNavigator(props) {
   const StackNav = props => {
-    const {user, error, getUser, logoutUser} = useContext(UserContext);
+    const { user, error, getUser, logoutUser } = useContext(UserContext);
     if (user) {
       if (!isAuthenticated(user.token)) {
         logoutUser();
@@ -67,7 +69,7 @@ export default function ScreenNavigator(props) {
     }
     return (
       <Stack.Navigator
-        screenOptions={{headerShown: false}}
+        screenOptions={{ headerShown: false }}
         initialRouteName={'Home'}>
         <Stack.Screen name="Home" component={BottomNavigator} />
         <Stack.Screen name="ShopHome" component={ShopHome} />
@@ -108,13 +110,17 @@ export default function ScreenNavigator(props) {
         <Stack.Screen name="EditRange" component={EditRange} />
 
         <Stack.Screen name="ChatScreen" component={ChatScreen} />
+
+        <Stack.Screen name="CallScreen" component={CallScreen} />
+
+        <Stack.Screen name="Withdraw" component={Withdraw} />
       </Stack.Navigator>
     );
   };
 
   return (
     <Drawer.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       drawerContent={props => <DrawerContent {...props} />}
       initialRouteName={'Home'}>
       <Drawer.Screen name="StackNav" component={StackNav} />

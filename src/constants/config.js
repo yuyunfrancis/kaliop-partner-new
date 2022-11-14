@@ -7,6 +7,9 @@ export const config = {
   CINET: {
     API_KEY: '441926940628af072c360e7.68632980',
     APP_ID: '914426',
+    NOTIFY_URL: 'http://hook.kalio.io/transfer.php',
+    PREFIX: '+237',
+    PASSWORD: 'Power@2022@Kalio',
   },
   video: {
     appId: 6374,

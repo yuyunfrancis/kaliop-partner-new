@@ -11,8 +11,8 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {COLORS, images} from '../constants';
-import {Avatar, Divider} from 'react-native-paper';
+import {COLORS} from '../constants';
+import {Avatar} from 'react-native-paper';
 import {config} from '../constants/config';
 import UserContext from '../contexts/UserContext';
 

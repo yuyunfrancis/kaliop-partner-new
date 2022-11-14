@@ -5,20 +5,19 @@ import {
   Text,
   StyleSheet,
   View,
+  PermissionsAndroid,
 } from 'react-native';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { io } from 'socket.io-client';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CountDown from 'react-native-countdown-component';
 
-import { COLORS, icons } from '../../constants';
-import ChatInput from './ChatInput';
-import MessageList from './MessageList';
-import { config } from '../../constants/config';
 import UserContext from '../../contexts/UserContext';
+import { config } from '../../constants/config';
+import { COLORS, icons } from '../../constants';
+import MessageList from './MessageList';
+import ChatInput from './ChatInput';
 
-// const socket = io(`${config.app.chat_api_url}`);
 
 const ChatScreen = props => {
   const { appointment } = props.route.params;
@@ -26,24 +25,16 @@ const ChatScreen = props => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState([]);
   const socket = useRef(io(`${config.app.chat_api_url}`)).current;
-  const [loading, setLoading] = useState(true);
   const [typing, setTyping] = useState(false);
-  const [toast, setToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [call, setCall] = useState(false);
-  const [localStream, setLocalStream] = useState(null);
-  const [sessionCall, setSessionCall] = useState(null);
-  const [remoteStream, setRemoteStream] = useState(null);
   let t1 = new Date(appointment?.range?.end);
-  let t2 = new Date(appointment?.range?.start);
+  let t2 = new Date();
   let dif = (t1.getTime() - t2.getTime()) / 1000;
   const [seconds, setSeconds] = useState(dif);
   let scrollView = useRef();
-
-  const onToggleSnackBar = () => setVisible(!visible);
-  const onDismissSnackBar = () => setVisible(false);
 
   const data = {
     username:
@@ -66,6 +57,14 @@ const ChatScreen = props => {
   };
 
   useEffect(() => {
+    if(seconds > 0){
+      setTimeout(() => setSeconds(seconds - 1), 1000);
+    }else{
+      navigation.goBack();
+    }
+  }, [seconds]);
+
+  useEffect(() => {
     const newMessages = [];
     socket.on('connect', () => {
       console.log('Connected');
@@ -82,8 +81,6 @@ const ChatScreen = props => {
     socket.on('roomUsers', ({ room, users }) => {
       // outputRoomName(room);
       // outputUsers(users);
-      setToast(true);
-      setToastMessage('User has joined');
     });
 
     socket.on('message', async message => {
@@ -102,37 +99,40 @@ const ChatScreen = props => {
     };
   }, [user]);
 
-  // const handleCall = () => {
-
-  //     const mediaParams = {
-  //         audio: true,
-  //         video: true
-  //     };
-
-  //     sessionCall
-  //         .getUserMedia(mediaParams)
-  //         .then((localStream) => {
-  //             setLocalStream(localStream);
-  //         })
-  //         .catch((error) => { });
-
-  //     const extension = {};
-  //     sessionCall.call(extension, (error) => { });
-  // }
-
   const handleSubmitMessage = message => {
     setTyping(false);
     return socket.emit('chatMessage', message);
   };
 
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Kalio Partner CAMERA Permission",
+          message: "Kalio Partner App needs access to your camera",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the camera");
+        navigation.navigate("CallScreen", { appointment });
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const handleCall = ()=>{
+      requestLocationPermission();
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      {/* <ChatHeader
-                typing={typing}
-                username={data.username}
-                profile={data.profile}
-                onlineStatus={data.onlineStatus}
-            /> */}
       {!call ? (
         <View style={styles.container}>
           <TouchableOpacity
@@ -142,7 +142,6 @@ const ChatScreen = props => {
           </TouchableOpacity>
           <View style={styles.profileOptions}>
             <TouchableOpacity style={styles.profile}>
-              {/*<Image source={`${config.app.api_url}/laboratories/images/${profile}`} style={styles.image} />*/}
               <View style={styles.usernameAndOnlineStatus}>
                 <Text style={styles.username}>{data.username}</Text>
                 {typing && <Text style={styles.onlineStatus}>Typing...</Text>}
@@ -150,31 +149,15 @@ const ChatScreen = props => {
             </TouchableOpacity>
             <View style={styles.options}>
               <TouchableOpacity style={{ paddingHorizontal: 5 }}
-                onPress={() => navigation.navigate("CallScreen", { appointment })}>
+                onPress={() => handleCall()}>
                 <Icon name="video-camera" size={20} color={COLORS.white} />
               </TouchableOpacity>
-              {/*  <TouchableOpacity style={{ paddingHorizontal: 20 }}>*/}
-              {/*    <Icon name="ellipsis-v" size={20} color={COLORS.white} />*/}
-              {/*  </TouchableOpacity>*/}
             </View>
           </View>
         </View>
       ) : (
         <View></View>
       )}
-      <CountDown
-        until={seconds}
-        //duration of countdown in seconds
-        timetoShow={['H', 'M', 'S']}
-        timeLabels={{ h: '', m: '', s: '' }}
-        //formate to show
-        onFinish={() => handleEnd()}
-        //on Finish call
-        onPress={() => console.log('hello')}
-        //on Press call
-        size={10}
-        style={{ paddingHorizontal: 8, margin: 15 }}
-      />
       {!call ? (
         <MessageList
           scrollView={scrollView}
