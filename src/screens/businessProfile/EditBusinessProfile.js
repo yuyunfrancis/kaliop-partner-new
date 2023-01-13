@@ -22,6 +22,8 @@ import {config} from '../../constants/config';
 import usePostAxiosData from '../../hooks/usePostAxiosData';
 import useDataFetching from '../../hooks/useDataFetching';
 import ImagePickerModal from '../../components/ImagePickerModal';
+import AddTextField from '../../components/utils/AddTextField';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const EditBusinessProfile = ({route}) => {
   const navigation = useNavigation();
@@ -33,7 +35,7 @@ const EditBusinessProfile = ({route}) => {
   const [email, setEmail] = useState(profile.email || '');
   const [phone, setPhone] = useState(profile.phone || '');
   const [studies, setStudies] = useState("Master's Level Student");
-  const [location, setLoaction] = useState('Yaounde');
+  const [location, setLocation] = useState('Yaounde');
   const [specialities, setSpecialities] = useState([]);
 
   const onSelect = selectedList => {
@@ -125,10 +127,15 @@ const EditBusinessProfile = ({route}) => {
   return (
     <>
       <StatusBar title="Edit Business Profile" />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : null}
-        style={{marginHorizontal: 15, paddingBottom: 15, marginBottom: 15}}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAwareScrollView
+        extraHeight={121}
+        showsVerticalScrollIndicator={false}
+        enableOnAndroid={true}
+        contentContainerStyle={{
+          paddingTop: 20,
+          marginHorizontal: 15,
+          paddingBottom: 40,
+        }}>
           <View style={{alignItems: 'center', marginTop: 20}}>
             <ImageBackground
               source={{uri: image?.uri}}
@@ -195,46 +202,50 @@ const EditBusinessProfile = ({route}) => {
             <></>
           )} */}
           <View style={{marginTop: 20, marginBottom: 15}}>
-            <TextInput
-              mode="Flat"
-              label="Full Name"
-              style={styles.input}
+            <AddTextField
+              placeholder="Full Name"
+              keyboardType="text"
+              placeholderTextColor="#C1C1C1"
               value={name}
-              onChangeText={name => setName(name)}
-              activeOutlineColor={COLORS.primary}
+              onChangeText={text => {
+                setName(text);
+              }}
             />
-
-            <TextInput
-              mode="Flat"
-              label="Email Address"
-              style={[styles.input, {marginTop: 10}]}
+            <AddTextField
+              placeholder="Email Address"
+              keyboardType="text"
+              placeholderTextColor="#C1C1C1"
               value={email}
-              onChangeText={email => setEmail(email)}
-              activeOutlineColor={COLORS.primary}
+              onChangeText={text => {
+                setEmail(text);
+              }}
             />
-            <TextInput
-              mode="Flat"
-              label="Phone Number"
-              style={[styles.input, {marginTop: 10}]}
+            <AddTextField
+              placeholder="Phone Number"
+              keyboardType="numeric"
+              placeholderTextColor="#C1C1C1"
               value={phone}
-              onChangeText={phone => setPhone(phone)}
-              activeOutlineColor={COLORS.primary}
+              onChangeText={text => {
+                setPhone(text);
+              }}
             />
-            <TextInput
-              mode="Flat"
-              label="Location"
-              style={[styles.input, {marginTop: 10}]}
+            <AddTextField
+              placeholder="Location"
+              keyboardType="text"
+              placeholderTextColor="#C1C1C1"
               value={location}
-              onChangeText={location => setLocation(location)}
-              activeOutlineColor={COLORS.primary}
+              onChangeText={text => {
+                setLocation(text);
+              }}
             />
-            <TextInput
-              mode="Flat"
-              label="Education"
-              style={[styles.input, {marginTop: 10}]}
+            <AddTextField
+              placeholder="Education"
+              keyboardType="text"
+              placeholderTextColor="#C1C1C1"
               value={studies}
-              onChangeText={education => setStudies(education)}
-              activeOutlineColor={COLORS.primary}
+              onChangeText={text => {
+                setStudies(text);
+              }}
             />
           </View>
 
@@ -255,7 +266,6 @@ const EditBusinessProfile = ({route}) => {
               {loading || loadingExp ? 'Updating...' : 'Update'}
             </Button>
           </View>
-        </ScrollView>
 
         <ImagePickerModal
           isVisible={visible}
@@ -263,7 +273,7 @@ const EditBusinessProfile = ({route}) => {
           onImageLibraryPress={onImageLibraryPress}
           onCameraPress={onCameraPress}
         />
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </>
   );
 };

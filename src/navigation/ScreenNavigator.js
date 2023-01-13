@@ -33,13 +33,13 @@ import {
   FileDetails,
   ChatScreen,
   CallScreen,
+  Withdraw,
 } from '../screens';
 import DrawerContent from './DrawerContent';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import jwt_decode from 'jwt-decode';
 import BottomNavigator from './BottomNavigator';
 import UserContext from '../contexts/UserContext';
-import Withdraw from '../screens/profile/Withdraw';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();

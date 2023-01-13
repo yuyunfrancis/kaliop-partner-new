@@ -12,16 +12,16 @@ import {Snackbar} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import UserContext from '../../contexts/UserContext';
-import AuthButton from '../../components/utils/auth/AuthButton';
-import PhoneInputField from '../../components/utils/PhoneInputField';
-import Title from '../../components/utils/auth/Title';
-import FormContainer from '../../components/utils/auth/FormContainer';
 import axios from 'axios';
-import {config} from '../../constants/config';
-import Error from '../../components/Error';
-import CustomStatusBar from '../../components/CustomStatusBar';
 import '../../../assets/i18n/i18n';
-import {COLORS} from '../../constants';
+import { config } from '../../constants/config';
+import { COLORS } from '../../constants';
+import CustomStatusBar from '../../components/CustomStatusBar';
+import FormContainer from '../../components/utils/auth/FormContainer';
+import PhoneInputField from '../../components/utils/PhoneInputField';
+import AuthButton from '../../components/utils/auth/AuthButton';
+import { Platform } from 'react-native';
+import Title from '../../components/utils/auth/Title';
 
 const Login = () => {
   const {user, contextError, loginUser} = useContext(UserContext);

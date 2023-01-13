@@ -14,13 +14,11 @@ import {useNavigation} from '@react-navigation/native';
 import MessageIcon from 'react-native-vector-icons/MaterialIcons';
 import {useTranslation} from 'react-i18next';
 import moment from 'moment';
-
-import {COLORS} from '../../constants';
-import Button from '../../components/utils/ButtonOutline';
-import {config} from '../../constants/config';
-import PrimaryButton from '../../components/utils/Button';
-import ButtonOutlineRed from '../../components/utils/ButtonOutlineRed';
 import usePostAxiosData from '../../hooks/usePostAxiosData';
+import { COLORS } from '../../constants';
+import Button from '../../components/utils/Button';
+import ButtonOutlineRed from '../../components/utils/ButtonOutlineRed';
+import { config } from '../../constants/config';
 
 const ListAppointments = ({appointments}) => {
   const {t} = useTranslation();
@@ -218,9 +216,9 @@ const ListAppointments = ({appointments}) => {
             )}
             <View style={{marginRight: 20}}>
               {appointments?.etat === 1 && (
-                <PrimaryButton loading={loading} onPress={() => handleAccept()}>
+                <Button loading={loading} onPress={() => handleAccept()}>
                   {t('accept')}
-                </PrimaryButton>
+                </Button>
               )}
             </View>
             {appointments?.etat === 1 && (

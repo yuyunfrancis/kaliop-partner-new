@@ -1,25 +1,23 @@
 import {
   FlatList,
-  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-import CustomStatusBar from '../../components/CustomStatusBar';
-import {COLORS} from '../../constants';
-import StatusBar from '../../components/StatusBar';
-import ListAppointments from './ListAppointments';
-import useDataFetching from '../../hooks/useDataFetching';
-import {config} from '../../constants/config';
-import Loader from '../../components/Loader';
-import Error from '../../components/Error';
 import UserContext from '../../contexts/UserContext';
 import {useTranslation} from 'react-i18next';
+import { config } from '../../constants/config';
+import CustomStatusBar from '../../components/CustomStatusBar';
+import StatusBar from '../../components/StatusBar';
+import { COLORS } from '../../constants';
+import ListAppointments from './ListAppointments';
+import Error from '../../components/Error';
+import Loader from '../../components/Loader';
+import useDataFetching from '../../hooks/useDataFetching';
 
 const ExpertOrLabAppointments = () => {
   const {user} = useContext(UserContext);

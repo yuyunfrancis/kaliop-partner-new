@@ -6,8 +6,8 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import BackButton from '../../components/utils/BackButton';
 import AuthButton from '../../components/utils/auth/AuthButton';
+import BackButton from '../../components/utils/BackButton';
 import TextInputFields from '../../components/utils/TextInputField';
 
 const ForgotPassword = () => {

@@ -13,16 +13,16 @@ import {
   Alert,
 } from 'react-native';
 import {Button} from 'react-native-paper';
-import AuthButton from '../../components/utils/auth/AuthButton';
-import BackButton from '../../components/utils/BackButton';
 import axios from 'axios';
-import {config} from '../../constants/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {COLORS} from '../../constants';
 import UserContext from '../../contexts/UserContext';
-import CustomStatusBar from '../../components/CustomStatusBar';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useTranslation} from 'react-i18next';
+import { config } from '../../constants/config';
+import CustomStatusBar from '../../components/CustomStatusBar';
+import BackButton from '../../components/utils/BackButton';
+import AuthButton from '../../components/utils/auth/AuthButton';
+import { COLORS } from '../../constants';
 
 const Verification = ({route, navigation}) => {
   const {user, loginUser} = useContext(UserContext);
