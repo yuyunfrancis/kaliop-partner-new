@@ -98,6 +98,23 @@ export default function Home() {
       },
       iconType: 'Ionicons',
     },
+    {
+      id: 4,
+      title: t('market'),
+      description: t('desc4'),
+      icon: (
+        <Icons
+          name="ios-basket-sharp"
+          style={{alignSelf: 'center'}}
+          size={60}
+          color={COLORS.primary}
+        />
+      ),
+      onPress: function () {
+        navigation.navigate('ShopHome');
+      },
+      iconType: 'Entypo',
+    },
   ];
 
   const menuSeed = [

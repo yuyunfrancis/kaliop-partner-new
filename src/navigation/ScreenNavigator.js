@@ -74,6 +74,7 @@ export default function ScreenNavigator(props) {
         <Stack.Screen name="Home" component={BottomNavigator} />
         <Stack.Screen name="ShopHome" component={ShopHome} />
         <Stack.Screen name="ShopDetails" component={ShopDetails} />
+        {/* <Stack.Screen name="AddNewShop" component={AddNewShop} /> */}
         <Stack.Screen name="AllProducts" component={AllProducts} />
         <Stack.Screen name="AddProduct" component={AddProduct} />
         <Stack.Screen name="ProductDetails" component={ProductDetails} />

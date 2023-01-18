@@ -22,6 +22,7 @@ import PhoneInputField from '../../components/utils/PhoneInputField';
 import AuthButton from '../../components/utils/auth/AuthButton';
 import { Platform } from 'react-native';
 import Title from '../../components/utils/auth/Title';
+import usePostDataUp from '../../hooks/usePostDataUp';
 
 const Login = () => {
   const {user, contextError, loginUser} = useContext(UserContext);
@@ -34,10 +35,12 @@ const Login = () => {
 
   const [phoneNumber, setphoneNumber] = useState('');
   const phoneInput = useRef(null);
-  const [error, setError] = useState();
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
   const [networkError, setNetworkError] = useState(null);
+  const [error, loading, postData] = usePostDataUp(
+    `${config.app.api_url}/request-verification-code`
+  );
 
   const [visible, setVisible] = React.useState(false);
 
@@ -45,40 +48,27 @@ const Login = () => {
 
   const onDismissSnackBar = () => setVisible(false);
 
-  useEffect(() => {
-    setError();
-  }, []);
+  // useEffect(() => {
+  //   setError();
+  // }, []);
 
-  const buttonPress = () => {
+  const buttonPress = async () => {
     if (!phoneNumber) {
       Alert.alert('success', 'Enter a valid phone number');
       return;
     }
-    setLoading(true);
-    axios
-      .post(`${config.app.api_url}/partner/request-verification-code`, {
-        phone: phoneNumber,
-      })
-      .then(response => {
-        console.log(response.request.responseText);
-        const res = JSON.parse(response.request.responseText);
-        setLoading(false);
-        if (res.success) {
-          navigation.navigate('Verification', {phoneNumber: phoneNumber});
-        } else {
-          Alert.alert(
-            'Oupss!',
-            "You don't have permission to access. Please contact Kalio Support",
-          );
-        }
-        return res;
-      })
-      .catch(err => {
-        setLoading(false);
-        Alert.alert('Error!', 'Something went wrong, please try again later.');
-        setNetworkError(err.message);
-        onToggleSnackBar();
-      });
+    setLoad(true);
+    await postData({ phone: phoneNumber }).then((res) => {
+      console.log("res", res);
+      setLoad(false);
+      if (res?.success) {
+        navigation.navigate("Verification", { phoneNumber: phoneNumber });
+      } else {
+        Alert.alert(t("signInInfo"), res?.message ? res?.message : "Network Error", [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]);
+      }
+    });
   };
 
   const {t, i18n} = useTranslation();
@@ -157,16 +147,15 @@ const Login = () => {
                 setphoneNumber(text);
               }}
             />
-            {error && (
+            {/* {error && (
               <View style={{marginTop: -40, marginBottom: 20}}>
                 <Error error={error} />
               </View>
-            )}
+            )} */}
             <View style={styles.btn}>
-              {!loading && (
-                <AuthButton title={t('login')} onPress={() => buttonPress()} />
-              )}
-              {loading && <AuthButton title={t('loading')} />}
+              {!load ? (
+                <AuthButton title={t("login")} onPress={() => buttonPress()} />
+              ):  <AuthButton title={t("loading")} />}
             </View>
 
             {/* <TextButton
