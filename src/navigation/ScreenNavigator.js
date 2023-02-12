@@ -40,6 +40,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import jwt_decode from 'jwt-decode';
 import BottomNavigator from './BottomNavigator';
 import UserContext from '../contexts/UserContext';
+import AddNewShop from '../screens/shop/AddNewShop';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -74,7 +75,7 @@ export default function ScreenNavigator(props) {
         <Stack.Screen name="Home" component={BottomNavigator} />
         <Stack.Screen name="ShopHome" component={ShopHome} />
         <Stack.Screen name="ShopDetails" component={ShopDetails} />
-        {/* <Stack.Screen name="AddNewShop" component={AddNewShop} /> */}
+        <Stack.Screen name="AddNewShop" component={AddNewShop} />
         <Stack.Screen name="AllProducts" component={AllProducts} />
         <Stack.Screen name="AddProduct" component={AddProduct} />
         <Stack.Screen name="ProductDetails" component={ProductDetails} />

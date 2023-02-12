@@ -102,15 +102,6 @@ const ShopHome = props => {
         activeOpacity={0.3}
         onPress={() => navigation.navigate('ShopDetails', item)}>
         <View style={[styles.shopContainer, styles.shadowProp]}>
-          <TouchableOpacity
-            style={{
-              alignSelf: 'flex-end',
-              position: 'absolute',
-              top: 10,
-              right: 8,
-            }}>
-            <Icons name="delete-outline" size={24} color={COLORS.primary} />
-          </TouchableOpacity>
 
           {item.image == undefined ? (
             <View style={styles.iconContainer}>
@@ -118,14 +109,27 @@ const ShopHome = props => {
             </View>
           ) : (
             <View>
-              <Image
-                source={{
-                  uri: `${config.app.api_url}/stores/images/${item.image}`,
-                }}
-                style={{width: '20%', height: '20%'}}
-              />
+            <Image
+              resizeMode="cover"
+              source={{
+                uri: `${config.app.api_url}/stores/images/${item.image}`,
+              }}
+              style={{
+                width: 150,
+                height: 100,
+                borderRadius: 12,
+              }}
+            />
             </View>
           )}
+          <TouchableOpacity
+            style={{
+              alignSelf: 'flex-end',
+              position: 'absolute',
+              right: 8,
+            }}>
+            <Icons name="delete-outline" size={24} color={COLORS.primary} />
+          </TouchableOpacity>
           <Text style={styles.shopName} numberOfLines={1}>
             {item.name}
           </Text>
@@ -215,6 +219,10 @@ const styles = StyleSheet.create({
   },
   addBtn: {
     alignItems: 'flex-end',
+  },image: {
+    width: "100%",
+    height: 100,
+    resizeMode: "cover",
   },
   content: {
     marginTop: 20,

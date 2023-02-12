@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 import StatusBar from '../../components/StatusBar';
 import CustomStatusBar from '../../components/CustomStatusBar';
-import {COLORS} from '../../constants';
-import {useNavigation} from '@react-navigation/native';
-import {TimePickerModal} from 'react-native-paper-dates';
+import { COLORS } from '../../constants';
+import { useNavigation } from '@react-navigation/native';
+import { TimePickerModal } from 'react-native-paper-dates';
 
 import {
   Dimensions,
@@ -25,14 +25,15 @@ import 'intl';
 import Button from '../../components/utils/Button';
 import usePostData from '../../hooks/usePostData';
 
-import {config} from '../../constants/config';
+import { config } from '../../constants/config';
 import Loader from '../../components/Loader';
 
 export default function AddRange(props) {
-  const {day, planning} = props.route.params;
+  const { day, planning } = props.route.params;
   const navigation = useNavigation();
 
   const [visible, setVisible] = React.useState(false);
+  const [click, setClick] = React.useState(false);
   const [time, setTime] = React.useState('10:30');
 
   const onDismiss = React.useCallback(() => {
@@ -40,11 +41,10 @@ export default function AddRange(props) {
   }, [setVisible]);
 
   const onConfirm = React.useCallback(
-    ({hours, minutes}) => {
+    ({ hours, minutes }) => {
       setVisible(false);
       setStart(new Date(new Date().setHours(hours, minutes, 0, 0)));
-      setEnd(new Date(new Date().setHours(hours, minutes, 0, 0)));
-      console.log({hours, minutes});
+      setEnd(new Date(new Date().setHours(hours+1, minutes, 0, 0)));
     },
     [setVisible],
   );
@@ -83,21 +83,33 @@ export default function AddRange(props) {
     };
   // , []);
 
-  const onEndChange = useCallback((event, selectedTime) => {}, [end]);
+  const onEndChange = useCallback((event, selectedTime) => { }, [end]);
 
   const saveNewRange = async () => {
+    setClick(true);
     try {
+      console.log("Range ", new Date().toDateString()+" "+start.toLocaleTimeString('en-US', {
+        timeZone: 'Africa/Douala'
+      }), new Date().toDateString()+" "+end.toLocaleTimeString('en-US', {
+        timeZone: 'Africa/Douala'
+      }))
       await postData({
-        start: start,
-        end: end,
+        start: new Date().toDateString()+" "+start.toLocaleTimeString('en-US', {
+          timeZone: 'Africa/Douala'
+        }),
+        end: new Date().toDateString()+" "+end.toLocaleTimeString('en-US', {
+          timeZone: 'Africa/Douala'
+        }),
         dayId: day._id,
         planningId: planning._id,
       }).then(r => {
+        setClick(false);
         // if(r!== undefined && r.status === 'success'){
         navigation.goBack();
         // }
       });
     } catch (e) {
+      setClick(false);
       console.error(e);
     }
   };
@@ -117,7 +129,7 @@ export default function AddRange(props) {
             alignItems: 'center',
             marginTop: 20,
           }}>
-          <Text style={{fontSize: 16, fontWeight: '500'}}>{day.name}</Text>
+          <Text style={{ fontSize: 16, fontWeight: '500' }}>{day.name}</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -127,7 +139,7 @@ export default function AddRange(props) {
             <TouchableOpacity
               style={styles.box}
               onPress={() => setVisible(true)}>
-              <Text style={{textAlign: 'center', marginBottom: 5}}>
+              <Text style={{ textAlign: 'center', marginBottom: 5 }}>
                 Start time
               </Text>
               <Text
@@ -154,12 +166,12 @@ export default function AddRange(props) {
                 cancelLabel="Cancel"
                 confirmLabel="Ok"
                 animationType="fade"
-                locale="en"
+                locale="fr"
               />
             </TouchableOpacity>
-            <View style={{alignItems: 'center', padding: 5}} />
+            <View style={{ alignItems: 'center', padding: 5 }} />
             <View style={styles.box}>
-              <Text style={{textAlign: 'center', marginBottom: 5}}>End</Text>
+              <Text style={{ textAlign: 'center', marginBottom: 5 }}>End</Text>
               <Text
                 style={{
                   marginVertical: 10,
@@ -167,17 +179,16 @@ export default function AddRange(props) {
                   fontWeight: 'bold',
                   color: COLORS.primary,
                 }}>
-                {new Date(
-                  end.setTime(end.getTime() + 60 * 60 * 1000),
-                ).toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {
+                  end.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
               </Text>
             </View>
           </View>
         </View>
-        <View style={{marginTop: 20}}>
+        <View style={{ marginTop: 20 }}>
           <Button
             onPress={saveNewRange}
             text="Save"
