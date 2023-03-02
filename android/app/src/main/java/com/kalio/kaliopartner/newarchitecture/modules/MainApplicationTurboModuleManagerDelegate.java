@@ -1,4 +1,4 @@
-package com.kaliopartner.newarchitecture.modules;
+package com.kalio.partner.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

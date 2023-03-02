@@ -1,4 +1,4 @@
-package com.kaliopartner.newarchitecture;
+package com.kalio.partner.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.kaliopartner.BuildConfig;
-import com.kaliopartner.newarchitecture.components.MainComponentsRegistry;
-import com.kaliopartner.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.kalio.partner.BuildConfig;
+import com.kalio.partner.newarchitecture.components.MainComponentsRegistry;
+import com.kalio.partner.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

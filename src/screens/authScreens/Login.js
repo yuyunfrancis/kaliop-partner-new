@@ -39,7 +39,7 @@ const Login = () => {
   const [load, setLoad] = useState(false);
   const [networkError, setNetworkError] = useState(null);
   const [error, loading, postData] = usePostDataUp(
-    `${config.app.api_url}/request-verification-code`
+    `${config.app.api_url}/partner/request-verification-code`
   );
 
   const [visible, setVisible] = React.useState(false);

@@ -1,4 +1,4 @@
-package com.kaliopartner;
+package com.kalio.partner;
 import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;

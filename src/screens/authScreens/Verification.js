@@ -45,7 +45,7 @@ const Verification = ({route, navigation}) => {
   const resendOtp = () => {
     setLoading(true);
     axios
-      .post(`${config.app.api_url}/request-verification-code`, {
+      .post(`${config.app.api_url}/partner/request-verification-code`, {
         phone: phoneNumber,
       })
       .then(response => {
