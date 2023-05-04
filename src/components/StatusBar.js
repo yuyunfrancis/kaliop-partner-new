@@ -17,7 +17,7 @@ import {config} from '../constants/config';
 import UserContext from '../contexts/UserContext';
 
 const StatusBar = props => {
-  const {user} = useContext(UserContext);
+  const {user} = props;
   const navigation = useNavigation();
   console.log('user', user);
   return (

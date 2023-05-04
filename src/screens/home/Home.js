@@ -24,22 +24,10 @@ export default function Home() {
   const {t} = useTranslation();
 
   const [seedVendor, setSeedVendor] = React.useState(false);
+  const [menu, setMenu] = React.useState(null);
+  const [transporter, setTransporter] = React.useState(false);
   const [agroExpert, setAgroExpert] = React.useState(false);
   const [laboratory, setLaboratory] = React.useState(false);
-
-  React.useEffect(() => {
-    const userProfile = user?.profil?.map(users => {
-      if (users?.name === 'AgroExpert' || users?.name === 'Laboratory') {
-        setAgroExpert(true);
-        setLaboratory(true);
-      } else if (users.name === 'SeedVendor') {
-        setSeedVendor(true);
-      }
-    });
-  }, []);
-
-  const navigation = useNavigation();
-  // const userProfile = user?.profil?.map(users => users.name);
 
   const menuExpert = [
     {
@@ -139,6 +127,82 @@ export default function Home() {
     },
   ];
 
+  const menuTransporter = [
+    {
+      id: 1,
+      title: t('vehicle'),
+      description: t('desc5'),
+      icon: (
+        <Icons
+          name="car"
+          style={{alignSelf: 'center'}}
+          size={60}
+          color={COLORS.primary}
+        />
+      ),
+      onPress: function () {
+        navigation.navigate('Vehicles');
+      },
+      iconType: 'Entypo',
+    },
+    {
+      id: 2,
+      title: t('destination'),
+      description: t('desc6'),
+      icon: (
+        <Icons
+          name="location"
+          style={{alignSelf: 'center'}}
+          size={60}
+          color={COLORS.primary}
+        />
+      ),
+      onPress: function () {
+        navigation.navigate('Destinations');
+      },
+      iconType: 'Entypo',
+    },
+    {
+      id: 3,
+      title: t('wallet'),
+      description: t('desc3'),
+      // icon: 'ios-wallet-outline',\
+      icon: (
+        <Icons
+          name="ios-wallet"
+          style={{alignSelf: 'center'}}
+          size={60}
+          color={COLORS.primary}
+        />
+      ),
+
+      onPress: function () {
+        navigation.navigate('My Wallet');
+      },
+      iconType: 'Ionicons',
+    },
+  ];
+  
+  React.useEffect(() => {
+    const userProfile = user?.profil?.map(users => {
+      if (users?.name === 'AgroExpert' || users?.name === 'Laboratory') {
+        setAgroExpert(true);
+        setLaboratory(true);
+        setMenu(menuExpert);
+      } else if (users.name === 'SeedVendor' || users.name === 'Seller') {
+        setSeedVendor(true);
+        setMenu(menuSeed);
+      } else if (users.name === 'Transporter') {
+        setTransporter(true);
+        setMenu(menuTransporter);
+      }
+    });
+  }, []);
+
+  const navigation = useNavigation();
+  // const userProfile = user?.profil?.map(users => users.name);
+
+
   function Item({item}) {
     return (
       <TouchableOpacity onPress={item.onPress}>
@@ -231,7 +295,7 @@ export default function Home() {
             //     ? menuSeed
             //     : menuExpert
             // }
-            data={agroExpert || laboratory ? menuExpert : menuSeed}
+            data={menu}
             scrollEnabled={true}
             renderItem={renderItem}
             keyExtractor={(item, index) => index}

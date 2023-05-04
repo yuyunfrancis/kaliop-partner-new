@@ -13,29 +13,29 @@ import {
   FlatList,
   PermissionsAndroid,
 } from 'react-native';
-import {Divider} from 'react-native-elements';
-import {Button} from 'react-native-paper';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import { Divider } from 'react-native-elements';
+import { Button } from 'react-native-paper';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 import * as ImagePicker from 'react-native-image-picker';
-import {Picker} from '@react-native-picker/picker';
-import {config} from '../../constants/config';
+import { Picker } from '@react-native-picker/picker';
+import { config } from '../../constants/config';
 import UserContext from '../../contexts/UserContext';
 import usePostAxiosData from '../../hooks/usePostAxiosData';
 import StatusBar from '../../components/StatusBar';
 import AddTextField from '../../components/utils/AddTextField';
-import {COLORS} from '../../constants';
+import { COLORS } from '../../constants';
 import ImagePickerModal from '../../components/ImagePickerModal';
 
-const AddProduct = ({route}) => {
+const AddProduct = ({ route }) => {
   const [pokemon, setPokemon] = useState();
   const navigation = useNavigation();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -44,7 +44,7 @@ const AddProduct = ({route}) => {
   const [place, setPlace] = useState('');
   const [rate, setRate] = useState('');
   const [color, setColor] = useState('');
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const stats = route.params;
 
   const header = {
@@ -55,6 +55,13 @@ const AddProduct = ({route}) => {
   //DropDown permissions
   const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
+  const [visible2, setVisible2] = useState(false);
+  const [visible3, setVisible3] = useState(false);
+  const [minQte, setMinQte] = useState(0);
+  const [totalQte, setTotalQte] = useState(0);
+  const [recipient, setRecipient] = useState('');
+  const [recipients, setRecipients] = useState([]);
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(false);
@@ -72,10 +79,16 @@ const AddProduct = ({route}) => {
   const [galleryPhoto, setGalleryPhoto] = useState();
   const fetchData = () => {
     const unityUrl = `${config.app.api_url}/unity`;
+    const recipientUrl = `${config.app.api_url}/recipient`;
     const currencyUrl = `${config.app.api_url}/currency`;
     const mainCategUrl = `${config.app.api_url}/find/main-category/${user._id}`;
 
     const getUnities = axios.get(unityUrl, {
+      headers: {
+        Authorization: 'Bearer ' + user.token,
+      },
+    });
+    const getRecipients = axios.get(recipientUrl, {
       headers: {
         Authorization: 'Bearer ' + user.token,
       },
@@ -91,15 +104,17 @@ const AddProduct = ({route}) => {
       },
     });
 
-    axios.all([getUnities, getCurrencies, getMainCategs]).then(
+    axios.all([getUnities, getCurrencies, getMainCategs, getRecipients]).then(
       axios.spread((...allData) => {
         const allUnityData = allData[0].data.data;
         const allCurrencyData = allData[1].data.data;
         const allMainCategData = allData[2].data.data;
+        const allRecipientData = allData[3].data.data;
 
         setUnities(allUnityData);
         setCurrencies(allCurrencyData);
         setMainCategs(allMainCategData);
+        setRecipients(allRecipientData);
       }),
     );
   };
@@ -131,7 +146,7 @@ const AddProduct = ({route}) => {
     setVisible(false);
 
     const options = {
-      selectionLimit: 1,
+      selectionLimit: 4,
       mediaType: 'photo',
       includeBase64: false,
     };
@@ -150,6 +165,12 @@ const AddProduct = ({route}) => {
 
   const image = pickerResponse?.assets && pickerResponse.assets[0];
 
+  const image1 = pickerResponse?.assets && pickerResponse.assets[1];
+
+  const image2 = pickerResponse?.assets && pickerResponse.assets[2];
+
+  const image3 = pickerResponse?.assets && pickerResponse.assets[3];
+
   const openGallery = async () => {
     const result = await launchImageLibrary(options);
     setGalleryPhoto(result.assets[0].uri);
@@ -164,7 +185,7 @@ const AddProduct = ({route}) => {
       const uriArray = image.uri.split('.');
       const fileExtension = uriArray[uriArray.length - 1];
 
-      data.append('file', {
+      data.append('image', {
         uri:
           Platform.OS === 'android'
             ? image.uri
@@ -174,10 +195,55 @@ const AddProduct = ({route}) => {
       });
     }
 
+    if (image1 !== null) {
+      const uriArray = image1.uri.split('.');
+      const fileExtension = uriArray[uriArray.length - 1];
+
+      data.append('image1', {
+        uri:
+          Platform.OS === 'android'
+            ? image1.uri
+            : image1.uri.replace('file://', ''),
+        name: image1.uri.split('/').pop(),
+        type: image1.type,
+      });
+    }
+
+    if (image2 !== null) {
+      const uriArray = image2.uri.split('.');
+      const fileExtension = uriArray[uriArray.length - 1];
+
+      data.append('image2', {
+        uri:
+          Platform.OS === 'android'
+            ? image2.uri
+            : image2.uri.replace('file://', ''),
+        name: image2.uri.split('/').pop(),
+        type: image2.type,
+      });
+    }
+
+    if (image3 !== null) {
+      const uriArray = image3.uri.split('.');
+      const fileExtension = uriArray[uriArray.length - 1];
+
+      data.append('image3', {
+        uri:
+          Platform.OS === 'android'
+            ? image3.uri
+            : image3.uri.replace('file://', ''),
+        name: image3.uri.split('/').pop(),
+        type: image3.type,
+      });
+    }
+
     data.append('name', name);
     data.append('price', price);
     data.append('currencyId', currency);
     data.append('unityId', unity);
+    data.append('minQte', minQte);
+    data.append('totalQte', totalQte);
+    data.append('recipientId', recipient);
     data.append('categoryId', category);
     data.append('store', stats.shop._id);
     data.append('userId', user._id);
@@ -187,6 +253,8 @@ const AddProduct = ({route}) => {
     data.append('place', place);
     data.append('rate_germination', rate);
     data.append('cycle', cycle);
+
+    console.log("Data ", data);
 
     const result = await postAxiosData(data).then(res => {
       return res;
@@ -227,7 +295,7 @@ const AddProduct = ({route}) => {
         </TouchableOpacity>
       </View>
       <Divider
-        style={{marginTop: 5}}
+        style={{ marginTop: 5 }}
         orientation="horizontal"
         width={0.5}
         height={5}
@@ -235,7 +303,7 @@ const AddProduct = ({route}) => {
       />
       <View>
         <View style={styles.panel}>
-          <View style={{alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <Text style={styles.panelTitle}>Upload Photo</Text>
             <Text style={styles.panelSubtitle}>Choose product image</Text>
           </View>
@@ -250,7 +318,7 @@ const AddProduct = ({route}) => {
             <Text style={styles.panelButtonTitle}>Choose From Library</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.panelButton, {paddingBottom: 10}]}
+            style={[styles.panelButton, { paddingBottom: 10 }]}
             onPress={() => sheetRef.current.snapTo(1)}>
             <Text style={styles.panelButtonTitle}>Cancel</Text>
           </TouchableOpacity>
@@ -260,20 +328,20 @@ const AddProduct = ({route}) => {
   );
 
   const colors = [
-    {value: 'red', label: 'Red'},
-    {value: 'green', label: 'Green'},
-    {value: 'brown', label: 'Brown'},
+    { value: 'red', label: 'Red' },
+    { value: 'green', label: 'Green' },
+    { value: 'brown', label: 'Brown' },
   ];
   const rates = [
-    {value: '10', label: '10%'},
-    {value: '20', label: '20%'},
-    {value: '50', label: '50%'},
+    { value: '10', label: '10%' },
+    { value: '20', label: '20%' },
+    { value: '50', label: '50%' },
   ];
 
   const places = [
-    {value: 'red soil', label: 'Red soil'},
-    {value: 'clay soil', label: 'Clay soil'},
-    {value: 'sandy soil', label: 'Sandy soil'},
+    { value: 'red soil', label: 'Red soil' },
+    { value: 'clay soil', label: 'Clay soil' },
+    { value: 'sandy soil', label: 'Sandy soil' },
   ];
 
   const sheetRef = React.createRef(null);
@@ -292,8 +360,8 @@ const AddProduct = ({route}) => {
         }}>
         <View style={styles.addBtn}>
           <Button
-            labelStyle={{fontSize: 14}}
-            style={{paddingTop: 3, paddingBottom: 3, paddingRight: 2}}
+            labelStyle={{ fontSize: 14 }}
+            style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 2 }}
             mode="contained"
             icon="content-save-outline"
             loading={loading}
@@ -338,7 +406,7 @@ const AddProduct = ({route}) => {
         />
         <Picker
           placeholder={t('category')}
-          style={[styles.pickerStyles, {marginTop: 15}]}
+          style={[styles.pickerStyles, { marginTop: 15 }]}
           selectedValue={mainCateg}
           onValueChange={value => {
             if (value != null) {
@@ -353,7 +421,7 @@ const AddProduct = ({route}) => {
         {categories.length > 0 ? (
           <>
             <Picker
-              placeholder={{label: t('category'), value: null}}
+              placeholder={{ label: t('category'), value: null }}
               style={styles.pickerStyles}
               selectedValue={category}
               onValueChange={value => {
@@ -372,7 +440,7 @@ const AddProduct = ({route}) => {
 
         <>
           <Picker
-            placeholder={{label: t('category'), value: null}}
+            placeholder={{ label: t('category'), value: null }}
             style={styles.pickerStyles}
             selectedValue={currency}
             onValueChange={value => {
@@ -386,7 +454,7 @@ const AddProduct = ({route}) => {
           </Picker>
         </>
         <Picker
-          placeholder={{label: t('category'), value: null}}
+          placeholder={{ label: t('category'), value: null }}
           style={styles.pickerStyles}
           selectedValue={unity}
           onValueChange={value => {
@@ -396,6 +464,37 @@ const AddProduct = ({route}) => {
           }}>
           {unities.map((unit, index) => (
             <Picker.Item key={index} label={unit.label} value={unit.value} />
+          ))}
+        </Picker>
+        <AddTextField
+          placeholder={t('pQuantity')}
+          keyboardType="numeric"
+          placeholderTextColor="#C1C1C1"
+          value={minQte}
+          onChangeText={text => {
+            setMinQte(text);
+          }}
+        />
+        <AddTextField
+          placeholder={t('ptotalQte')}
+          keyboardType="numeric"
+          placeholderTextColor="#C1C1C1"
+          value={totalQte}
+          onChangeText={text => {
+            setTotalQte(text);
+          }}
+        />
+        <Picker
+          placeholder={{ label: t('recipient'), value: null }}
+          style={styles.pickerStyles}
+          selectedValue={recipient}
+          onValueChange={value => {
+            if (value != null) {
+              setRecipient(value);
+            }
+          }}>
+          {recipients.map((recipient, index) => (
+            <Picker.Item key={index} label={recipient.label} value={recipient.value} />
           ))}
         </Picker>
 
@@ -409,33 +508,78 @@ const AddProduct = ({route}) => {
         </Text>
         <View
           style={{
+            flex: 1,
             flexDirection: 'row',
-            alignItems: 'center',
-            // marginTop: 5,
-            alignSelf: 'flex-start',
+            justifyContent:'space-between'
           }}>
-          <View style={styles.imageContainer}>
-            {image && (
-              <ImageBackground
-                source={{uri: image.uri}}
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 8,
-                }}></ImageBackground>
-            )}
+          <View >
+            <TouchableOpacity
+              onPress={() => setVisible3(true)}
+              style={styles.cameraIconView}>
+              {image && (
+                <ImageBackground
+                  source={{ uri: image.uri }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 8,
+                  }}></ImageBackground>
+              )}
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            onPress={() => setVisible(true)}
-            style={styles.cameraIconView}>
-            <Icon name="ios-camera-outline" size={36} color="#7D7D7D" />
-          </TouchableOpacity>
+          <View >
+            <TouchableOpacity
+              onPress={() => setVisible1(true)}
+              style={styles.cameraIconView}>
+              {image1 && (
+                <ImageBackground
+                  source={{ uri: image1.uri }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 8,
+                  }}></ImageBackground>
+              ) }
+            </TouchableOpacity>
+          </View>
+
+          <View >
+            <TouchableOpacity
+              onPress={() => setVisible2(true)}
+              style={styles.cameraIconView}>
+              {image2 && (
+                <ImageBackground
+                  source={{ uri: image2.uri }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 8,
+                  }}></ImageBackground>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <View >
+            <TouchableOpacity
+              onPress={() => setVisible(true)}
+              style={styles.cameraIconView}>
+              {image3 ? (
+                <ImageBackground
+                  source={{ uri: image3.uri }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 8,
+                  }}></ImageBackground>
+              ) : (<Icon name="ios-camera-outline" size={26} color="#7D7D7D" />)}
+            </TouchableOpacity>
+          </View>
         </View>
 
         <Picker
-          placeholder={{label: t('category'), value: null}}
-          style={[styles.pickerStyles, {marginTop: 15}]}
+          placeholder={{ label: t('category'), value: null }}
+          style={[styles.pickerStyles, { marginTop: 15 }]}
           selectedValue={color}
           onValueChange={value => {
             if (value != null) {
@@ -467,8 +611,8 @@ const AddProduct = ({route}) => {
         />
 
         <Picker
-          placeholder={{label: t('category'), value: null}}
-          style={[styles.pickerStyles, {marginTop: 15}]}
+          placeholder={{ label: t('category'), value: null }}
+          style={[styles.pickerStyles, { marginTop: 15 }]}
           selectedValue={place}
           onValueChange={value => {
             if (value != null) {
@@ -480,8 +624,8 @@ const AddProduct = ({route}) => {
           ))}
         </Picker>
         <Picker
-          placeholder={{label: t('category'), value: null}}
-          style={[styles.pickerStyles, {marginTop: 15}]}
+          placeholder={{ label: t('category'), value: null }}
+          style={[styles.pickerStyles, { marginTop: 15 }]}
           selectedValue={rate}
           onValueChange={value => {
             if (value != null) {
@@ -515,7 +659,7 @@ const AddProduct = ({route}) => {
 
 export default AddProduct;
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -531,13 +675,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   cameraIconView: {
-    width: 100,
-    height: 100,
+    width: 50,
+    height: 50,
     borderRadius: 8,
     backgroundColor: '#C2C2C2',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'flex-start',
   },
   textAreaContainer: {
     borderColor: '#C1C1C1',
@@ -580,7 +723,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#FFFFFF',
     shadowColor: '#333333',
-    shadowOffset: {width: -1, height: -3},
+    shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
     // elevation: 5,
@@ -638,7 +781,7 @@ const styles = StyleSheet.create({
   pickerStyles: {
     width: '100%',
     backgroundColor: 'white',
-    marginBottom: 15,
+    marginTop: 15,
     color: 'gray',
   },
 });

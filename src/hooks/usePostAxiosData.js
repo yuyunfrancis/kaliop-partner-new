@@ -26,8 +26,8 @@ const usePostAxiosData = (url, method = 'POST') => {
         .then(res => {
           setLoading(false);
           if (
-            res.statusCode !== null &&
-            res.statusCode !== undefined &&
+            res.statusCode != null &&
+            res.statusCode != undefined &&
             res.statusCode >= 300
           ) {
             console.log('res err', res);

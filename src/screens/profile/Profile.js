@@ -31,9 +31,15 @@ const Profile = () => {
   const [loading, error, userType, fetchData] = useDataFetching(
     `${config.app.api_url}/gallery`,
   );
+  
+  const [loaduser, erroruser, info, fetchUser] = useDataFetching(
+    `${config.app.api_url}/findUser/${user._id}`,
+  );
+
   useEffect(() => {
     const updateData = navigation.addListener('focus', () => {
       fetchData();
+      fetchUser();
     });
     return updateData;
   }, [navigation]);
@@ -49,7 +55,7 @@ const Profile = () => {
         <FontAwesome5 name="user" size={24} color={COLORS.backgroundDark} />
       ),
       title: 'Pseudo (Public name)',
-      text: user?.pseudo || '',
+      text: info?.pseudo || '',
     },
     {
       id: 1,
@@ -57,7 +63,7 @@ const Profile = () => {
         <Icon name="email-outline" size={24} color={COLORS.backgroundDark} />
       ),
       title: 'Email',
-      text: user?.email || '',
+      text: info?.email || '',
     },
     {
       id: 2,
@@ -69,7 +75,7 @@ const Profile = () => {
         />
       ),
       title: 'Phone Number',
-      text: user?.phone || '',
+      text: info?.phone || '',
     },
     {
       id: 3,
@@ -117,7 +123,7 @@ const Profile = () => {
       <StatusBar
         title={'Profile'}
         showProfile
-        user={user}
+        user={info}
         // showProfileDetails
       />
       {/* <Button
@@ -141,7 +147,7 @@ const Profile = () => {
             icon="square-edit-outline"
             mode="contained"
             uppercase={false}
-            onPress={() => navigation.navigate('EditProfile', {user})}
+            onPress={() => navigation.navigate('EditProfile', {info})}
             style={{
               paddingTop: 3,
               paddingBottom: 3,

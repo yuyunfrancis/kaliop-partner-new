@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Button} from 'react-native-paper';
 import Loader from 'react-native-modal-loader';
@@ -20,9 +20,11 @@ import Search from '../../components/utils/Search';
 import {COLORS} from '../../constants';
 import useDataFetching from '../../hooks/useDataFetching';
 import {config} from '../../constants/config';
+import UserContext from '../../contexts/UserContext';
 
 const OrderDetails = ({route}) => {
   const [catergoryIndex, setCategoryIndex] = useState(0);
+  const {user} = useContext(UserContext);
   const categories = [
     {label: 'All orders', value: 1},
     {label: 'Accepted', value: 3},

@@ -1,6 +1,6 @@
 export const config = {
   app: {
-    api_url: 'http://api.kalio.io/api',
+    api_url: 'http://192.168.100.25:3300/api',
     python_api_url: 'http://192.168.100.45:5000/api',
     chat_api_url: 'ws://chat.kalio.io',
   },

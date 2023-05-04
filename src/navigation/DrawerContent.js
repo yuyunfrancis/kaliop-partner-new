@@ -38,14 +38,18 @@ const DrawerContent = props => {
   const [seedVendor, setSeedVendor] = useState(false);
   const [agroExpert, setAgroExpert] = useState(false);
   const [laboratory, setLaboratory] = useState(false);
+  const [seller, setSeller] = useState(false);
+  const [transporter, setTransporter] = useState(false);
 
   useEffect(() => {
     const userProfile = user?.profil?.map(users => {
       if (users.name === 'AgroExpert' || users.name === 'Laboratory') {
         setAgroExpert(true);
         setLaboratory(true);
-      } else if (users.name === 'SeedVendor') {
+      } else if (users.name === 'SeedVendor' || users.name === 'Seller') {
         setSeedVendor(true);
+      } else if (users.name === 'Transporter') {
+        setTransporter(true);
       }
     });
   }, []);
@@ -124,6 +128,29 @@ const DrawerContent = props => {
                 icon={icons.profile_pic}
                 onPress={() => props.navigation.navigate('Profile')}
               /> */}
+              {seller || seedVendor && (
+                <>
+                  <CustomDrawerItem
+                    label={t('market')}
+                    icon={icons.access}
+                    onPress={() => props.navigation.navigate('ShopHome')}
+                  />
+                </>
+              )}
+              {transporter && (
+                <>
+                  <CustomDrawerItem
+                    label={t('vehicle')}
+                    icon={icons.access}
+                    onPress={() => props.navigation.navigate('Vehicles')}
+                  />
+                  <CustomDrawerItem
+                    label={t('destination')}
+                    icon={icons.access}
+                    onPress={() => props.navigation.navigate('Destinations')}
+                  />
+                </>
+              )}
 
               {agroExpert || laboratory ? (
                 <>

@@ -41,6 +41,10 @@ import jwt_decode from 'jwt-decode';
 import BottomNavigator from './BottomNavigator';
 import UserContext from '../contexts/UserContext';
 import AddNewShop from '../screens/shop/AddNewShop';
+import Vehicles from '../screens/vehicles/Vehicles';
+import AddNewVehicle from '../screens/vehicles/AddNewVehicle';
+import Destinations from '../screens/destinations/Destinations';
+import AddNewCost from '../screens/destinations/AddNewCost';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -73,6 +77,10 @@ export default function ScreenNavigator(props) {
         screenOptions={{ headerShown: false }}
         initialRouteName={'Home'}>
         <Stack.Screen name="Home" component={BottomNavigator} />
+        <Stack.Screen name="Destinations" component={Destinations} />
+        <Stack.Screen name="AddNewCost" component={AddNewCost} />
+        <Stack.Screen name="Vehicles" component={Vehicles} />
+        <Stack.Screen name="AddNewVehicle" component={AddNewVehicle} />
         <Stack.Screen name="ShopHome" component={ShopHome} />
         <Stack.Screen name="ShopDetails" component={ShopDetails} />
         <Stack.Screen name="AddNewShop" component={AddNewShop} />

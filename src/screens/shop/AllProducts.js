@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Alert,
   View,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
@@ -20,6 +21,7 @@ import {config} from '../../constants/config';
 import UserContext from '../../contexts/UserContext';
 import Loader from '../../components/Loader';
 import {useTranslation} from 'react-i18next';
+import axios from 'axios';
 
 const AllProducts = ({route}) => {
   const {t} = useTranslation();
@@ -27,6 +29,7 @@ const AllProducts = ({route}) => {
   const [like, setLike] = useState(false);
   // const [products, setProducts] = useState([]);
   // const [loading, setLoading] = useState(false);
+  const [loadstatus, setLoadstatus] = useState(false);
   const stats = route.params;
   const [loading, error, products, fetchData] = useDataFetching(
     `${config.app.api_url}/products/by-store/${stats.shop._id}`,
@@ -37,6 +40,54 @@ const AllProducts = ({route}) => {
   console.log('====================================');
   // console.log(products);
   const navigation = useNavigation();
+
+  const handleDialogStatus = (item) => {
+    return Alert.alert(
+      'Are you sure?',
+      `Are you sure you want to deleted this product?`,
+      [
+        {
+          text: 'Yes',
+          onPress: () => {
+            handleChangeStatus(item);
+          },
+        },
+        {
+          text: 'No',
+        },
+      ],
+    );
+  };
+
+  const handleChangeStatus = async (item) => {
+    setLoadstatus(true);
+    const configurationData = {
+      method: 'DELETE',
+      url: `${config.app.api_url}/products/${item._id}`,
+      headers: {
+        Authorization: 'Bearer ' + user.token,
+      },
+    };
+    await axios(configurationData)
+      .then(response => {
+        console.log('response', response);
+        if (response.data.status === 'success') {
+          setLoadstatus(false);
+          Alert.alert('success', response.data.message, [
+            {
+              title: 'Ok',
+              onPress: () => navigation.navigate('AllProducts', {stats: stats.stats, shop: stats.shop}),
+            },
+          ]);
+        }
+      })
+      .catch(error => {
+        setLoadstatus(false);
+        Alert.alert('error', error, [
+          {title: 'Ok', onPress: () => navigation.goBack()},
+        ]);
+      });
+  };
 
   useEffect(() => {
     const updateData = navigation.addListener('focus', () => {
@@ -70,9 +121,6 @@ const AllProducts = ({route}) => {
   // };
 
   const renderItem = ({item}) => {
-    console.log('====================================');
-    console.log(`${config.app.api_url}/products/images/${item.image}`);
-    console.log('====================================');
 
     return (
       <TouchableOpacity
@@ -104,7 +152,8 @@ const AllProducts = ({route}) => {
             <Text numberOfLines={1} style={{fontSize: 15, fontWeight: '600'}}>
               {item.name}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity 
+                    onPress={() => handleDialogStatus(item)}>
               <Icon
                 name={'ios-trash-outline'}
                 size={25}
@@ -137,7 +186,7 @@ const AllProducts = ({route}) => {
           </Button>
         </View>
 
-        {loading ? (
+        {loading || loadstatus ? (
           <Loader />
         ) : (
           <FlatList
